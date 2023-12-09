@@ -52,6 +52,8 @@ data:
       skipApprovalScreen: true
     web:
       http: 0.0.0.0:5556
+      tlsCert: /etc/dex/tls/tls.crt
+      tlsKey: /etc/dex/tls/tls.key
     frontend:
       theme: custom
     telemetry:
@@ -132,6 +134,8 @@ spec:
         volumeMounts:
         - mountPath: /etc/dex/cfg
           name: config
+        - mountPath: /etc/dex/tls
+          name: tls
         - mountPath: /web/themes/custom/
           name: theme          
       dnsPolicy: ClusterFirst
@@ -141,6 +145,9 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
+      - name: tls
+        secret:
+          secretName: dex
       - configMap:
           defaultMode: 420
           items:
@@ -159,11 +166,13 @@ metadata:
 spec:
   selector:
     app: dex
+  type: NodePort
   ports:
   - name: dex
     port: 5556
     protocol: TCP
     targetPort: 5556
+    nodePort: 32000
 ---
 
 apiVersion: networking.k8s.io/v1
