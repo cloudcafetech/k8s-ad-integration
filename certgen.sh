@@ -15,15 +15,17 @@ keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1 = auth.172.30.2.2.nip.io
+DNS.1 = auth.172.30.2.1.nip.io
+DNS.2 = auth.172.30.2.2.nip.io
+IP.1 = 172.30.2.1
+IP.2 = 172.30.2.2
 EOF
 
-openssl genrsa -out ssl/ca-key.pem 2048
-openssl req -x509 -new -nodes -key ssl/ca-key.pem -days 10 -out ssl/ca.pem -subj "/CN=kube-ca"
+openssl genrsa -out ssl/ca.key 4096
+openssl req -x509 -new -nodes -key ssl/ca.key -days 3650 -out ssl/ca.crt -subj "/CN=kube-ca"
 
-openssl genrsa -out ssl/key.pem 2048
-openssl req -new -key ssl/key.pem -out ssl/csr.pem -subj "/CN=kube-ca" -config ssl/req.cnf
-openssl x509 -req -in ssl/csr.pem -CA ssl/ca.pem -CAkey ssl/ca-key.pem -CAcreateserial -out ssl/cert.pem -days 10 -extensions v3_req -extfile ssl/req.cnf
+openssl genrsa -out ssl/tls.key 4096
+openssl req -new -key ssl/tls.key -out ssl/tls.csr -subj "/CN=kube-ca" -config ssl/req.cnf
+openssl x509 -req -in ssl/tls.csr -CA ssl/ca.crt -CAkey ssl/ca.key -CAcreateserial -out ssl/tls.crt -days 3650 -extensions v3_req -extfile ssl/req.cnf
 
-# Create Secrets
-kubectl create ns auth-system; kubectl create secret tls dex --key ssl/key.pem --cert ssl/cert.pem -n auth-system
+kubectl create ns auth-system; kubectl create secret tls dex --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
