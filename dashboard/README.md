@@ -20,11 +20,11 @@ Now we need to find token we can use to log in. Execute following command:
 
 **Admin Token:**
 
-```kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount admin-user -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode```
+```kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d ```
 
 **Read only User Token:**
 
-```kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount read-only-user -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode```
+```kubectl get secret read-only-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d```
 
 It should print the data with line like:
 
