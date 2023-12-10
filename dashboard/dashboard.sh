@@ -12,10 +12,9 @@ msgstopped="Kubernetes Dashboard stopped"
 
 case $1 in
 start)
-   wget -q $dashboard_yaml
-   wget -q $readonly_yaml
-   wget -q $admin_yaml   
-   wget -q $ing_yaml   
+   wget $dashboard_yaml
+   wget $readonly_yaml
+   wget $admin_yaml   
    kubectl apply -f $dashboard_yaml >/dev/null 2>&1
    kubectl apply -f $readonly_yaml >/dev/null 2>&1
    kubectl apply -f $admin_yaml >/dev/null 2>&1
