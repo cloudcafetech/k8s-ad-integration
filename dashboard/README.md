@@ -1,7 +1,7 @@
 ## 1) Deploy the Dashboard UI
 
 ```
-wget https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ui.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ui.yaml
 kubectl apply -f dashboard-ui.yaml
 ```
 
