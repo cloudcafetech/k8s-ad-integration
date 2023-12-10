@@ -23,6 +23,13 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/
 kubectl create -f dex.yaml
 ```
 
+#### You can check if Dex is deployed properly by browsing 
+
+```
+curl https://auth.172.30.2.2.nip.io/.well-known/openid-configuration  --cacert ssl/ca.crt
+curl https://auth.172.30.2.2.nip.io/dex/auth --cacert ssl/ca.crt
+```
+
 ### Install Oauth2 Proxy [A reverse proxy and static file server that provides authentication using Providers (Google, GitHub, and others) to validate accounts]
 ```
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/oauth-proxy.yaml
