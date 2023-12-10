@@ -4,7 +4,7 @@ metadata:
   namespace: kubernetes-dashboard
   name: kubernetes-dashboard-ingress
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+    spec.ingressClassName: "nginx"  
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     # Uncomment next if you use https://cert-manager.io/
