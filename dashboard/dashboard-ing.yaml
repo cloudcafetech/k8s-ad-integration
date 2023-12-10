@@ -15,7 +15,8 @@ spec:
     - dashboard.172.30.2.2.nip.io
     secretName: kubernetes-dashboard-cert
   rules:
-  - http:
+  - host: dashboard.172.30.2.2.nip.io  
+    http:
       paths:
       - path: /
         pathType: Prefix
