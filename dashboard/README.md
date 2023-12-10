@@ -45,3 +45,12 @@ kubectl create -f dashboard-ing.yaml
 ## 5) Login to dashboard
 
 Go to `https://dashboard.172.30.2.2.nip.io` and insert the previous created token into `Enter token` field.
+
+### Use Script
+
+```
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard.sh
+chmod 755 dashboard.sh
+./dashboard.sh
+```
+
