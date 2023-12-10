@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dex
+  namespace: auth-system
+data:
+  config.yaml: |
+    issuer: https://auth.172.30.2.2.nip.io/
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
+    oauth2:
+      skipApprovalScreen: true
+    web:
+      http: 0.0.0.0:5556
+      tlsCert: /etc/dex/tls/tls.crt
+      tlsKey: /etc/dex/tls/tls.key
+    frontend:
+      theme: custom
+    telemetry:
+      http: 0.0.0.0:5558
+    staticClients:
+    - id: oidc-auth-client
+      redirectURIs:
+      - https://kubectl.172.30.2.2.nip.io/callback
+      - http://dashboard.172.30.2.2.nip.io/oauth2/callback
+      name: oidc-auth-client
+      secret: secret
+    connectors:
+    - type: ldap
+      id: ldap
+      name: LDAP
+      config:
+        host: 172.16.16.16:389
+        insecureNoSSL: true
+        insecureSkipVerify: true
+        bindDN: admin
+        bindPW: 'StrongAdminPassw0rd'
+        userSearch:
+          baseDN: OU=Cloudcafe Organisation,DC=cloudcafe,DC=org
+          username: sAMAccountName
+          idAttr: sn
+          nameAttr: givenName
+          emailAttr: mail
+        groupSearch: 
+          baseDN: CN=groups,OU=cloudcafe,DC=cloudcafe,DC=org 
+          userMatchers:
+          - userAttr: sAMAccountName
+            groupAttr: memberOf
+          nameAttr: givenName
