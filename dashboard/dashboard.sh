@@ -63,10 +63,10 @@ esac
 if [ $showtoken -gt 0 ]; then
    # Show token
    echo "Admin token:"
-   kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount admin-user -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+   kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d   
    echo
 
    echo "User read-only token:"
-   kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount read-only-user -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+   kubectl get secret read-only-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
    echo
 fi
