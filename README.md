@@ -1,6 +1,30 @@
 # Kubernetes Dashboard Active Directory Integration
 
-### Create K8S Cluster
+## Setup LDAP Server
+
+#### Run LDAP Server
+```
+apt install ldap-utils -y
+HIP=`ip -o -4 addr list enp1s0 | awk '{print $4}' | cut -d/ -f1`
+
+docker run --name ldap-server -p 389:389 -p 636:636 \
+--env LDAP_TLS_VERIFY_CLIENT=try \
+--env LDAP_ORGANISATION="Cloudcafe Org" \
+--env LDAP_DOMAIN="cloudcafe.org" \
+--env LDAP_ADMIN_PASSWORD="StrongAdminPassw0rd" \
+--detach osixia/openldap:latest
+```
+
+#### Add LDAP User & Group 
+```
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ldap-records.ldif
+ldapadd -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -f ldap-records.ldif
+```
+
+#### LDAP query (test)
+```ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,dc=org" -w "StrongAdminPassw0rd"```
+
+## Create K8S Cluster
 
 https://killercoda.com/playgrounds/scenario/kubernetes
 
@@ -24,7 +48,6 @@ kubectl create -f dex.yaml
 ```
 
 #### You can check if Dex is deployed properly by browsing 
-
 ```
 curl https://auth.172.30.2.2.nip.io/.well-known/openid-configuration  --cacert ssl/ca.crt
 curl https://auth.172.30.2.2.nip.io/dex/auth --cacert ssl/ca.crt
