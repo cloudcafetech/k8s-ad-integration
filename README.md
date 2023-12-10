@@ -55,7 +55,7 @@ curl https://auth.172.30.2.2.nip.io/.well-known/openid-configuration  --cacert s
 curl https://auth.172.30.2.2.nip.io/dex/auth --cacert ssl/ca.crt
 ```
 
-### Install Oauth2 Proxy [A reverse proxy and static file server that provides authentication using Providers (Google, GitHub, and others) to validate accounts]
+### Install Oauth2 Proxy [Authentication using Providers (LDAP,AD etc)]
 ```
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/oauth-proxy.yaml
 kubectl create -f oauth-proxy.yaml
