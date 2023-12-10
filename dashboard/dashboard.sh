@@ -7,7 +7,7 @@ dashboard_yaml="https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integrati
 readonly_yaml="https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-read-only.yaml"
 admin_yaml="https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-admin.yaml"
 ing_yaml="https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ing.yaml"
-msgstarted="-e Kubernetes Dashboard e[92mstartede[0m"
+msgstarted="-e Kubernetes Dashboard started"
 msgstopped="Kubernetes Dashboard stopped"
 
 case $1 in
