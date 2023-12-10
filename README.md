@@ -43,7 +43,9 @@ chmod 755 certgen.sh
 
 ### Install DEX [OpenID Connect (OIDC)]
 ```
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex-ldap-cm.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex.yaml
+kubectl create -f dex-ldap-cm.yaml
 kubectl create -f dex.yaml
 ```
 
