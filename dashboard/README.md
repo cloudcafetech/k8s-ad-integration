@@ -8,19 +8,23 @@ kubectl apply -f dashboard-ui.yaml
 ## 2) Creating the Service Account and ClusterRoleBinding
 
 ```
-wget https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ac.yaml
-kubectl apply -f dashboard-ac.yaml
+wget https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-admin.yaml
+wget https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-read-only.yaml
+kubectl apply -f dashboard-admin.yaml
+kubectl apply -f dashboard-read-only.yaml
 ```
 
 ## 3) Get a Bearer Token
 
 Now we need to find token we can use to log in. Execute following command:
 
-For Bash:
+**Admin Token:**
 
-```bash
-kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
-```
+```kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount admin-user -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode```
+
+**Read only User Token:**
+
+```kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount read-only-user -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode```
 
 It should print the data with line like:
 
