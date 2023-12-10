@@ -1,7 +1,8 @@
 ## 1) Deploy the Dashboard UI
 
-```bash
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+```
+wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+kubectl apply -f recommended.yaml
 ```
 
 ## 2) Creating the Service Account and ClusterRoleBinding
