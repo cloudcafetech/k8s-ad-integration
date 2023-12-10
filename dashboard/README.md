@@ -8,8 +8,8 @@ kubectl apply -f dashboard-ui.yaml
 ## 2) Creating the Service Account and ClusterRoleBinding
 
 ```
-wget https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-admin.yaml
-wget https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-read-only.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-admin.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-read-only.yaml
 kubectl apply -f dashboard-admin.yaml
 kubectl apply -f dashboard-read-only.yaml
 ```
@@ -38,7 +38,7 @@ Now save it. You need to use it whe login the dashboard.
 ## 4) Create the ingress controller
 
 ```
-wget https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ing.yaml
+wget -w https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ing.yaml
 kubectl create -f dashboard-ing.yaml
 ```
 
