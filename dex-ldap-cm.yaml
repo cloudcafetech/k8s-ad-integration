@@ -5,7 +5,7 @@ metadata:
   namespace: auth-system
 data:
   config.yaml: |
-    issuer: https://auth.172.30.2.2.nip.io/
+    issuer: https://auth.172.30.2.2.nip.io:30443/
     storage:
       type: kubernetes
       config:
@@ -23,8 +23,8 @@ data:
     staticClients:
     - id: oidc-auth-client
       redirectURIs:
-      - https://kubectl.172.30.2.2.nip.io/callback
-      - http://dashboard.172.30.2.2.nip.io/oauth2/callback
+      - https://kubectl.172.30.2.2.nip.io:30443/callback
+      - http://dashboard.172.30.2.2.nip.io:30443/oauth2/callback
       name: oidc-auth-client
       secret: secret
     connectors:
@@ -32,7 +32,7 @@ data:
       id: ldap
       name: LDAP
       config:
-        host: 172.16.16.16:389
+        host: 172.30.1.2:389
         insecureNoSSL: true
         insecureSkipVerify: true
         startTLS: false
