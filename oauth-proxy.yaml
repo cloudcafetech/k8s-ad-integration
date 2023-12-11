@@ -21,11 +21,13 @@ spec:
         - --provider=oidc
         - --client-id=oidc-auth-client
         - --client-secret=secret
-        - --oidc-issuer-url=https://auth.172.30.2.2.nip.io/
+        - --oidc-issuer-url=https://auth.172.30.2.2.nip.io:30443/
         - --http-address=0.0.0.0:8080
         - --upstream=file:///dev/null
         - --email-domain=*
         - --set-authorization-header=true
+        # For x509 certificate error
+        - --ssl_insecure_skip_verify=true
         env:
         # docker run -ti --rm python:3-alpine python -c 'import secrets,base64; print(base64.b64encode(base64.b64encode(secrets.token_bytes(16))));'
         - name: OAUTH2_PROXY_COOKIE_SECRET
