@@ -14,7 +14,7 @@ metadata:
 rules:
 - apiGroups:
   - ""
-  resources: ["*"]
+  resources: ["pods","configmaps","services","ingress","events","namespaces","nodes","limitranges","persistentvolumes","persistenttvolumeclaims","resourcequotas"]
   verbs:
   - get
   - list
