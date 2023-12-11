@@ -107,3 +107,6 @@ kubectl auth can-i get pods
 kubectl auth can-i get deployments      
 kubectl auth can-i create deployments  
 ```
+
+[Ref#1](https://discuss.kubernetes.io/t/configure-oidc-with-dex-for-a-microk8s-cluster/18339)
+[Ref#2](https://computingforgeeks.com/kubernetes-and-active-directory-integration/)
