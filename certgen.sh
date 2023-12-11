@@ -28,4 +28,9 @@ openssl genrsa -out ssl/tls.key 4096
 openssl req -new -key ssl/tls.key -out ssl/tls.csr -subj "/CN=kube-ca" -config ssl/req.cnf
 openssl x509 -req -in ssl/tls.csr -CA ssl/ca.crt -CAkey ssl/ca.key -CAcreateserial -out ssl/tls.crt -days 3650 -extensions v3_req -extfile ssl/req.cnf
 
-kubectl create ns auth-system; kubectl create secret tls dex --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
+# Namespace for Dex
+kubectl create ns auth-system 
+# Secret for Dex
+kubectl create secret tls dex --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
+# Secret for Kubernetes Dashboard external TLS Ingress
+kubectl create secret tls k8s-dashboard-external-tls --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
