@@ -64,13 +64,17 @@ vi /etc/kubernetes/manifests/kube-apiserver.yaml
 ```
 
 **As follows**
-##### ENSURE THE WILDCARD CERTIFICATES ARE PRESENT IN THIS FILE PATH IN ALL MASTER NODES: 
+##### (ENSURE THE WILDCARD CERTIFICATES ARE PRESENT IN THIS FILE PATH IN ALL MASTER NODES)
 
 ```
-    command:
-    - /hyperkube
-    - apiserver
-    - --advertise-address=10.10.40.30 
+  name: kube-apiserver
+  namespace: kube-system
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --advertise-address=172.30.1.2
+    - --allow-privileged=true
 #ADD THE FOLLOWING LINES:
 ... 
     - --oidc-issuer-url=https://auth.172.30.2.2.nip.io:30443/
