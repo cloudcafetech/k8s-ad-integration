@@ -51,8 +51,8 @@ kubectl create -f dex.yaml
 
 #### You can check if Dex is deployed properly by browsing 
 ```
-curl https://auth.172.30.2.2.nip.io/.well-known/openid-configuration  --cacert ssl/ca.crt
-curl https://auth.172.30.2.2.nip.io/dex/auth --cacert ssl/ca.crt
+curl https://auth.172.30.2.2.nip.io:30443/.well-known/openid-configuration  --cacert ssl/ca.crt
+curl https://auth.172.30.2.2.nip.io:30443/auth --cacert ssl/ca.crt
 ```
 
 ### Install Oauth2 Proxy [Authentication using Providers (LDAP,AD etc)]
