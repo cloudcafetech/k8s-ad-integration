@@ -55,8 +55,55 @@ curl https://auth.172.30.2.2.nip.io:30443/.well-known/openid-configuration  --ca
 curl https://auth.172.30.2.2.nip.io:30443/auth --cacert ssl/ca.crt
 ```
 
+### Modify API Server manifest
+Copy Certificate & edit the Kubernetes API configuration. Add the OIDC parameters and modify the issuer URL accordingly.
+
+```
+cp ssl/ca.crt /etc/ssl/kubernetes/dex-ca.crt
+vi /etc/kubernetes/manifests/kube-apiserver.yaml
+```
+
+**As follows**
+##### ENSURE THE WILDCARD CERTIFICATES ARE PRESENT IN THIS FILE PATH IN ALL MASTER NODES: 
+
+```
+    command:
+    - /hyperkube
+    - apiserver
+    - --advertise-address=10.10.40.30 
+#ADD THE FOLLOWING LINES:
+... 
+    - --oidc-issuer-url=https://auth.172.30.2.2.nip.io:30443/
+    - --oidc-client-id=oidc-auth-client
+    - --oidc-ca-file=/etc/ssl/kubernetes/dex-ca.crt   
+    - --oidc-username-claim=email
+    - --oidc-groups-claim=groups
+...
+```
+
 ### Install Oauth2 Proxy [Authentication using Providers (LDAP,AD etc)]
 ```
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/oauth-proxy.yaml
 kubectl create -f oauth-proxy.yaml
+```
+
+### Install Dashboard
+```
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard.sh
+chmod 755 dashboard.sh
+./dashboard.sh
+```
+
+### Create the role binding for different users
+```
+kubectl create rolebinding pkar-admin --clusterrole=admin --user=pkar
+kubectl create rolebinding mkar-read-only-default --clusterrole=read-only-clusterrole --user=mkar -n default
+kubectl create rolebinding read-only-user --clusterrole=read-only-clusterrole --user=read-only-user
+```
+
+### Testing
+```
+kubectl auth can-i get pods             
+kubectl auth can-i get deployments      
+kubectl auth can-i create deployments  
 ```
