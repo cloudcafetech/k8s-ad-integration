@@ -11,7 +11,6 @@ metadata:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   labels:
   name: read-only-clusterrole
-  namespace: default
 rules:
 - apiGroups:
   - ""
