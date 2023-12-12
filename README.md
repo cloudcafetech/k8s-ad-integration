@@ -59,7 +59,7 @@ curl https://auth.172.30.2.2.nip.io:30443/auth --cacert ssl/ca.crt
 Copy Certificate & edit the Kubernetes API configuration. Add the OIDC parameters and modify the issuer URL accordingly.
 
 ```
-cp ssl/ca.crt /etc/ssl/kubernetes/dex-ca.crt
+cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
 vi /etc/kubernetes/manifests/kube-apiserver.yaml
 ```
 
@@ -79,7 +79,7 @@ spec:
 ... 
     - --oidc-issuer-url=https://auth.172.30.2.2.nip.io:30443/
     - --oidc-client-id=oidc-auth-client
-    - --oidc-ca-file=/etc/ssl/kubernetes/dex-ca.crt   
+    - --oidc-ca-file=/etc/kubernetes/pki/dex-ca.crt
     - --oidc-username-claim=email
     - --oidc-groups-claim=groups
 ...
