@@ -5,6 +5,21 @@
 apt install ldap-utils -y
 HIP=`ip -o -4 addr list enp1s0 | awk '{print $4}' | cut -d/ -f1`
 
+# Install Docker
+if ! command -v docker &> /dev/null;
+then
+  echo "MISSING REQUIREMENT: docker engine could not be found on your system. Please install docker engine to continue: https://docs.docker.com/get-docker/"
+  echo "Trying to Install Docker..."
+  if [[ $(uname -a | grep amzn) ]]; then
+    echo "Installing Docker for Amazon Linux"
+    amazon-linux-extras install docker -y
+  else
+    curl -s https://releases.rancher.com/install-docker/19.03.sh | sh
+  fi    
+fi
+systemctl start docker
+systemctl enable docker
+
 docker run --name ldap-server -p 389:389 -p 636:636 \
 --env LDAP_TLS_VERIFY_CLIENT=try \
 --env LDAP_ORGANISATION="Cloudcafe Org" \
