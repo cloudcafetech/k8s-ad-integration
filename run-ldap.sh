@@ -28,7 +28,7 @@ docker run --name ldap-server -p 389:389 -p 636:636 \
 --detach osixia/openldap:latest
 
 # Check LDAP Server UP & Running
-
+sleep 10
 until [ $(docker inspect -f "{{json .State.Status }}" $(docker ps -a | grep ldap-server | awk '{print $1}')) == '"running"' ]; do echo "Waiting for LDAP to UP..." && sleep 1; done
 
 # Add LDAP User & Group
