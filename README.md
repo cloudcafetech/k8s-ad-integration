@@ -15,6 +15,12 @@ docker run --name ldap-server -p 389:389 -p 636:636 \
 --detach osixia/openldap:latest
 ```
 
+#### Check LDAP Server UP & running
+
+```
+until [ $(docker inspect -f "{{json .State.Status }}" $(docker ps -a | grep ldap-server | awk '{print $1}')) == '"running"' ]; do echo "Waiting for LDAP to UP..." && sleep 1; done
+```
+
 #### Add LDAP User & Group 
 ```
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ldap-records.ldif
@@ -22,7 +28,9 @@ ldapadd -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0
 ```
 
 #### LDAP query (test)
-```ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,dc=org" -w "StrongAdminPassw0rd"```
+```
+ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,dc=org" -w "StrongAdminPassw0rd"
+```
 
 ## Create K8S Cluster
 
