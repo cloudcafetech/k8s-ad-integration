@@ -2,6 +2,15 @@
 
 ## Setup LDAP Server
 
+#### By Script
+```
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/run-ldap.sh
+chmod 755 run-ldap.sh
+./run-ldap.sh
+```
+
+**OR**
+
 #### Run LDAP Server
 ```
 apt install ldap-utils -y
@@ -27,7 +36,7 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/
 ldapadd -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -f ldap-records.ldif
 ```
 
-#### LDAP query (test)
+#### LDAP query (Verify)
 ```
 ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,dc=org" -w "StrongAdminPassw0rd"
 ```
