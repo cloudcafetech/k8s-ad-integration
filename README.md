@@ -101,8 +101,8 @@ chmod 755 dashboard.sh
 ### Create the role binding for different users
 ```
 kubectl create rolebinding pkar-admin --clusterrole=admin --user=pkar
-kubectl create rolebinding mkar-read-only-default --clusterrole=read-only-clusterrole --user=mkar -n default
-kubectl create rolebinding read-only-user --clusterrole=read-only-clusterrole --user=read-only-user
+kubectl create rolebinding mkar-read-only-default --clusterrole=view --user=mkar -n default
+kubectl create rolebinding read-only-user --clusterrole=view --user=read-only-user
 ```
 
 ### Testing
