@@ -2,29 +2,20 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: kubernetes-dashboard
-  name: kubernetes-dashboard-ingress
+  name: k8s-dashboard
   annotations:
-    nginx.ingress.kubernetes.io/auth-response-headers: >-
-      X-Auth-Request-Email,X-Auth-Request-Preferred-,X-Auth-Request-Access-Token,
-      X-Auth-Request-Roles,X-Auth-Request-User,X-Auth-Request-Groups,X-Forwarded-Groups,
-      Authorization
-    nginx.ingress.kubernetes.io/auth-url: "https://oauth-proxy/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://oauth-proxy/oauth2/start?rd=$escaped_request_uri"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    ingress.kubernetes.io/configuration-snippet: |
-      auth_request_set $token $upstream_http_authorization;
-      proxy_set_header Authorization $token;
-      proxy_pass_header Authorization;  
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true" 
     # Uncomment next if you use https://cert-manager.io/
     # cert-manager.io/cluster-issuer: "<YOUR CLUSTER ISSUER>"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - dashboard.172.30.2.2.nip.io
+    - k8s-dashboard.172.30.2.2.nip.io
     secretName: kubernetes-dashboard-cert
   rules:
-  - host: dashboard.172.30.2.2.nip.io  
+  - host: k8s-dashboard.172.30.2.2.nip.io  
     http:
       paths:
       - path: /
