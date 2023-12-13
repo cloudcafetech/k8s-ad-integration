@@ -16,13 +16,20 @@ spec:
         k8s-app: oauth2-proxy
     spec:
       containers:
-      - args:
+      - name: oauth2-proxy  
+        #image: sguyennet/oauth2-proxy:header-2.2      
+        image: quay.io/oauth2-proxy/oauth2-proxy:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4180
+          protocol: TCP      
+        args:
         - --cookie-secure=false
         - --provider=oidc
         - --client-id=oidc-auth-client
         - --client-secret=secret
         - --oidc-issuer-url=https://auth.172.30.2.2.nip.io:30443/
-        - --http-address=0.0.0.0:8080
+        - --http-address=0.0.0.0:4180
         - --upstream=file:///dev/null
         - --email-domain=*
         - --set-authorization-header=true
@@ -32,12 +39,6 @@ spec:
         # docker run -ti --rm python:3-alpine python -c 'import secrets,base64; print(base64.b64encode(base64.b64encode(secrets.token_bytes(16))));'
         - name: OAUTH2_PROXY_COOKIE_SECRET
           value: L01OS1ZEMUFIdTVsK3Z6dU0xa2REUT09
-        image: sguyennet/oauth2-proxy:header-2.2
-        imagePullPolicy: Always
-        name: oauth2-proxy
-        ports:
-        - containerPort: 8080
-          protocol: TCP
 ---
 apiVersion: v1
 kind: Service
@@ -49,9 +50,9 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 8080
+    port: 4180
     protocol: TCP
-    targetPort: 8080
+    targetPort: 4180
   selector:
     k8s-app: oauth2-proxy
 ---
@@ -79,4 +80,4 @@ spec:
             service:
               name: oauth2-proxy
               port:
-                number: 8080
+                number: 4180
