@@ -38,7 +38,7 @@ Now save it. You need to use it whe login the dashboard.
 ## 4) Create the ingress controller
 
 ```
-wget -w https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ing.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ing.yaml
 kubectl create -f dashboard-ing.yaml
 ```
 
