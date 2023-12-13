@@ -68,9 +68,9 @@ spec:
   tls:
   - secretName: k8s-dashboard-external-tls
     hosts:
-    - kubernetes-dashboard.172.30.2.2.nip.io
+    - dashboard.172.30.2.2.nip.io
   rules:
-  - host: kubernetes-dashboard.172.30.2.2.nip.io
+  - host: dashboard.172.30.2.2.nip.io
     http:
       paths:
         - path: /oauth2
@@ -98,7 +98,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: kubernetes-dashboard.172.30.2.2.nip.io
+  - host: dashboard.172.30.2.2.nip.io
     http:
       paths:
       - path: /
