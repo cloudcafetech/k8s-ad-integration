@@ -16,8 +16,7 @@ spec:
         k8s-app: oauth2-proxy
     spec:
       containers:
-      - name: oauth2-proxy  
-        #image: sguyennet/oauth2-proxy:header-2.2      
+      - name: oauth2-proxy   
         image: quay.io/oauth2-proxy/oauth2-proxy:latest
         imagePullPolicy: Always
         ports:
@@ -69,15 +68,39 @@ spec:
   tls:
   - secretName: k8s-dashboard-external-tls
     hosts:
-    - oauth-proxy.172.30.2.2.nip.io
+    - kubernetes-dashboard.172.30.2.2.nip.io
   rules:
-  - host: oauth-proxy.172.30.2.2.nip.io
+  - host: kubernetes-dashboard.172.30.2.2.nip.io
     http:
       paths:
-        - path: /
+        - path: /oauth2
           pathType: Prefix
           backend:
             service:
               name: oauth2-proxy
               port:
                 number: 4180
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: "https://$host:30443/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host:30443/oauth2/start?rd=$escaped_request_uri"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/auth-response-headers: "authorization"
+  name: k8s-dashboard-external-auth2
+  namespace: kubernetes-dashboard
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: kubernetes-dashboard.172.30.2.2.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kubernetes-dashboard
+            port:
+              number: 443
