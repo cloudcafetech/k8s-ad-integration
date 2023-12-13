@@ -45,6 +45,14 @@ ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,
 
 https://killercoda.com/playgrounds/scenario/kubernetes
 
+**OR**
+
+```
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/k8s-setup.sh
+chmod 755 k8s-setup.sh
+./k8s-setup.sh
+```
+
 ### Setup Ingress
 ```
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/deploy.yaml
