@@ -31,6 +31,11 @@ sed -i -e 's\172.30.2.2\$PUBIPM\g' dex.yaml
 kubectl create -f dex-ldap-cm.yaml
 kubectl create -f dex.yaml
 
+# Check for Dex POD UP
+echo "Waiting for Dex POD ready .."
+DEXPOD=$(kubectl get pod -n auth-system | grep dex | awk '{print $1}')
+kubectl wait pods/$DEXPOD --for=condition=Ready --timeout=5m -n auth-system
+
 # Oauth Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/oauth-proxy.yaml
 sed -i -e 's\:30443\\g' oauth-proxy.yaml
