@@ -131,6 +131,7 @@ kubectl get nodes -o json | jq .items[].spec.taints
 
 # Setup Ingress
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/deploy.yaml
+sed -i -e 's\      #hostNetwork: true\      hostNetwork: true\g' deploy.yaml
 kubectl create -f deploy.yaml
 
 # Setup Metric Server
