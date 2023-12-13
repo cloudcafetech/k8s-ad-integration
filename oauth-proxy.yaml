@@ -69,9 +69,9 @@ spec:
   tls:
   - secretName: k8s-dashboard-external-tls
     hosts:
-    - dashboard.172.30.2.2.nip.io
+    - oauth-proxy.172.30.2.2.nip.io
   rules:
-  - host: dashboard.172.30.2.2.nip.io
+  - host: oauth-proxy.172.30.2.2.nip.io
     http:
       paths:
         - path: /
