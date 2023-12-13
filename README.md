@@ -72,8 +72,10 @@ curl https://auth.172.30.2.2.nip.io:30443/.well-known/openid-configuration  --ca
 curl https://auth.172.30.2.2.nip.io:30443/auth --cacert ssl/ca.crt
 ```
 
-### Modify API Server manifest
+### Modify API Server manifest (IN ALL MASTER NODES)
 Copy Certificate & edit the Kubernetes API configuration. Add the OIDC parameters and modify the issuer URL accordingly.
+
+**NOTE: After edit kube-apiserver.yaml, the API Server POD automatically restart**  
 
 ```
 cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
@@ -100,6 +102,12 @@ spec:
     - --oidc-username-claim=email
     - --oidc-groups-claim=groups
 ...
+```
+
+### Check if APIServer POD Up & Running
+
+```
+kubectl wait pods/kube-apiserver-controlplane --for=condition=Ready --timeout=2m -n kube-system
 ```
 
 ### Install Oauth2 Proxy [Authentication using Providers (LDAP,AD etc)]
