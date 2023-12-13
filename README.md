@@ -72,6 +72,10 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex.yaml
 kubectl create -f dex-ldap-cm.yaml
 kubectl create -f dex.yaml
+
+echo "Waiting for Dex POD ready .."
+DEXPOD=$(kubectl get pod -n auth-system | grep dex | awk '{print $1}')
+kubectl wait pods/$DEXPOD --for=condition=Ready --timeout=5m -n auth-system
 ```
 
 #### You can check if Dex is deployed properly by browsing 
