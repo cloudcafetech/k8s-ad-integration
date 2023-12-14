@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Kubernetes host setup script using Kubeadm for Debian & Redhat distribution
 
-PUBIPM=31.128.11.45
-PUBIPN=21.20.11.46
 K8S_VER=1.26.0-00
 
 if [[ -n $(uname -a | grep -iE 'ubuntu|debian') ]]; then 
