@@ -4,6 +4,7 @@
 
 PUBIPM=31.128.11.45
 PUBIPN=21.20.11.46
+LDAPIP=172.168.1.1
 
 ### AD Integration ###
 
@@ -11,23 +12,23 @@ PUBIPN=21.20.11.46
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ui.yaml
 kubectl apply -f dashboard-ui.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ing.yaml
-sed -i -e 's\172.30.2.2\$PUBIPM\g' dashboard-ing.yaml
+sed -i -e "s|172.30.2.2|$PUBIPM|g" dashboard-ing.yaml
 kubectl create -f dashboard-ing.yaml
 
 # Certificate Generate
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/certgen.sh
-sed -i -e 's\172.30.2.2\$PUBIPN\g' certgen.sh
-sed -i -e 's\172.30.1.2\$PUBIPM\g' certgen.sh
+sed -i -e "s|172.30.2.2|$PUBIPN|g" certgen.sh
+sed -i -e "s|172.30.1.2|$PUBIPM|g" certgen.sh
 chmod 755 certgen.sh
 ./certgen.sh
 
 # Dex Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex-ldap-cm.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex.yaml
-sed -i -e 's\172.30.2.2\$PUBIPM\g' dex-ldap-cm.yaml
-sed -i -e 's\172.30.1.2\$PUBIPM\g' dex-ldap-cm.yaml
-sed -i -e 's\:30443\\g' dex-ldap-cm.yaml
-sed -i -e 's\172.30.2.2\$PUBIPM\g' dex.yaml
+sed -i -e "s|172.30.2.2|$PUBIPN|g" dex-ldap-cm.yaml
+sed -i -e "s|172.30.1.2|$PUBIPM|g" dex-ldap-cm.yaml
+sed -i -e "s|:30443||g" dex-ldap-cm.yaml
+sed -i -e "s|172.30.2.2|$LDAPIP|g" dex.yaml
 kubectl create -f dex-ldap-cm.yaml
 kubectl create -f dex.yaml
 
@@ -38,8 +39,8 @@ kubectl wait pods/$DEXPOD --for=condition=Ready --timeout=5m -n auth-system
 
 # Oauth Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/oauth-proxy.yaml
-sed -i -e 's\:30443\\g' oauth-proxy.yaml
-sed -i -e 's\172.30.2.2\$PUBIPM\g' oauth-proxy.yaml
+sed -i -e "s|:30443||g" oauth-proxy.yaml
+sed -i -e "s|172.30.1.2|$PUBIPM|g" oauth-proxy.yaml
 kubectl create -f oauth-proxy.yaml
 
 # Create the role binding for different users
