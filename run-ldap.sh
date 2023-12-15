@@ -20,7 +20,7 @@ fi
 systemctl start docker
 systemctl enable docker
 
-docker run --name ldap-server -p 389:389 -p 636:636 \
+docker run --restart=always --name ldap-server -p 389:389 -p 636:636 \
 --env LDAP_TLS_VERIFY_CLIENT=try \
 --env LDAP_ORGANISATION="Cloudcafe Org" \
 --env LDAP_DOMAIN="cloudcafe.org" \
