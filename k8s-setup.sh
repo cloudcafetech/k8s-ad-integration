@@ -120,8 +120,8 @@ export KUBECONFIG=$HOME/admin.conf
 echo "export KUBECONFIG=$HOME/admin.conf" >> $HOME/.bash_profile
 echo "alias oc=/usr/bin/kubectl" >> /root/.bash_profile
 
-mkdir setup-files
-cd setup-files
+#mkdir setup-files
+#cd setup-files
 
 wget -q https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 kubectl create -f kube-flannel.yml
