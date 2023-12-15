@@ -4,16 +4,16 @@ metadata:
   namespace: kubernetes-dashboard
   name: k8s-dashboard
   annotations:
-    kubernetes.io/tls-acme: "true"
-    ingress.kubernetes.io/force-ssl-redirect: "true" 
+    #kubernetes.io/tls-acme: "true"
+    #ingress.kubernetes.io/force-ssl-redirect: "true" 
     # Uncomment next if you use https://cert-manager.io/
     # cert-manager.io/cluster-issuer: "<YOUR CLUSTER ISSUER>"
 spec:
   ingressClassName: nginx
-  tls:
-  - hosts:
-    - k8s-dashboard.172.30.2.2.nip.io
-    secretName: k8s-dashboard-tls
+  #tls:
+  #- hosts:
+  #  - k8s-dashboard.172.30.2.2.nip.io
+  #  secretName: k8s-dashboard-tls
   rules:
   - host: k8s-dashboard.172.30.2.2.nip.io  
     http:
