@@ -16,7 +16,7 @@ chmod 755 run-ldap.sh
 apt install ldap-utils -y
 HIP=`ip -o -4 addr list enp1s0 | awk '{print $4}' | cut -d/ -f1`
 
-docker run --name ldap-server -p 389:389 -p 636:636 \
+docker run --restart=always --name ldap-server -p 389:389 -p 636:636 \
 --env LDAP_TLS_VERIFY_CLIENT=try \
 --env LDAP_ORGANISATION="Cloudcafe Org" \
 --env LDAP_DOMAIN="cloudcafe.org" \
