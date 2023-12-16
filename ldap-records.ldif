@@ -1,3 +1,5 @@
+# Users definitions
+
 dn: ou=People,dc=cloudcafe,dc=org
 objectClass: organizationalUnit
 ou: People
@@ -7,7 +9,7 @@ objectClass: person
 objectClass: inetOrgPerson
 sn: kar
 cn: prasen
-mail: prasenkar@cloudcafe.com
+mail: prasenkar@cloudcafe.org
 userpassword: prasen123
 
 dn: cn=debrup,ou=People,dc=cloudcafe,dc=org
@@ -15,10 +17,10 @@ objectClass: person
 objectClass: inetOrgPerson
 sn: kar
 cn: debrup
-mail: debrupkar@cloudcafe.com
+mail: debrupkar@cloudcafe.org
 userpassword: debrup123
 
-# Group definitions.
+# Group definitions
 
 dn: ou=Groups,dc=cloudcafe,dc=org
 objectClass: organizationalUnit
