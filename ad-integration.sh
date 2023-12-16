@@ -5,6 +5,7 @@
 PUBIPM=31.128.11.45
 PUBIPN=21.20.11.46
 LDAPIP=172.168.1.1
+MASTERIP=172.168.2.22
 
 ### AD Integration ###
 
@@ -28,7 +29,8 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/
 sed -i -e "s|172.30.2.2|$PUBIPM|g" dex-ldap-cm.yaml
 sed -i -e "s|172.30.1.2|$LDAPIP|g" dex-ldap-cm.yaml
 sed -i -e "s|:30443||g" dex-ldap-cm.yaml
-sed -i -e "s|172.30.2.2|$LDAPIP|g" dex.yaml
+sed -i -e "s|172.30.2.2|$PUBIPM|g" dex.yaml
+sed -i -e "s|master-ip|$MASTERIP|g" dex.yaml
 kubectl create -f dex-ldap-cm.yaml
 kubectl create -f dex.yaml
 
