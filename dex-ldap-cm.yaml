@@ -38,16 +38,16 @@ data:
         startTLS: false
         bindDN: cn=admin,dc=cloudcafe,dc=org
         bindPW: 'StrongAdminPassw0rd'
+        usernamePrompt: Email Address
         userSearch:
-          baseDN: ou=users,dc=cloudcafe,dc=org
-          emailAttr: uid
-          filter: (objectClass=inetOrgPerson)
-          idAttr: uid
-          nameAttr: uid
-          preferredUsernameAttr: uid
-          username: uid
-        groupSearch: 
-          baseDN: dc=cloudcafe,dc=org
+          baseDN: ou=People,dc=cloudcafe,dc=org
+          emailAttr: mail
+          filter: (objectClass=person)
+          idAttr: DN
+          nameAttr: cn
+          username: mail
+        groupSearch:
+          baseDN: ou=groups,dc=cloudcafe,dc=org
           filter: (objectClass=groupOfNames)
           nameAttr: cn
           userMatchers:
