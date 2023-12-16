@@ -25,8 +25,8 @@ chmod 755 certgen.sh
 # Dex Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex-ldap-cm.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex.yaml
-sed -i -e "s|172.30.2.2|$PUBIPN|g" dex-ldap-cm.yaml
-sed -i -e "s|172.30.1.2|$PUBIPM|g" dex-ldap-cm.yaml
+sed -i -e "s|172.30.2.2|$PUBIPM|g" dex-ldap-cm.yaml
+sed -i -e "s|172.30.1.2|$LDAPIP|g" dex-ldap-cm.yaml
 sed -i -e "s|:30443||g" dex-ldap-cm.yaml
 sed -i -e "s|172.30.2.2|$LDAPIP|g" dex.yaml
 kubectl create -f dex-ldap-cm.yaml
@@ -40,7 +40,8 @@ kubectl wait pods/$DEXPOD --for=condition=Ready --timeout=5m -n auth-system
 # Oauth Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/oauth-proxy.yaml
 sed -i -e "s|:30443||g" oauth-proxy.yaml
-sed -i -e "s|172.30.1.2|$PUBIPM|g" oauth-proxy.yaml
+sed -i -e "s|172.30.2.2|$PUBIPM|g" oauth-proxy.yaml
+sed -i -e "s|172.30.1.2|$PUBIPN|g" oauth-proxy.yaml
 kubectl create -f oauth-proxy.yaml
 
 # Create the role binding for different users
