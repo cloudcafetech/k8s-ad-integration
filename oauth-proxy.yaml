@@ -89,10 +89,6 @@ metadata:
     nginx.ingress.kubernetes.io/auth-signin: "https://$host:30443/oauth2/start?rd=$escaped_request_uri"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/auth-response-headers: "authorization"
-    #nginx.ingress.kubernetes.io/auth-response-headers: >-
-    #  X-Auth-Request-Email,X-Auth-Request-Preferred-,X-Auth-Request-Access-Token,
-    #  X-Auth-Request-Roles,X-Auth-Request-User,X-Auth-Request-Groups,X-Forwarded-Groups,
-    #  Authorization     
   name: k8s-dashboard-external-auth2
   namespace: kubernetes-dashboard
 spec:
