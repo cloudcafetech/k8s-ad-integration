@@ -1,0 +1,36 @@
+dn: ou=People,dc=cloudcafe,dc=org
+objectClass: organizationalUnit
+ou: People
+
+dn: cn=prasen,ou=People,dc=cloudcafe,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+sn: kar
+cn: prasen
+mail: prasenkar@cloudcafe.com
+userpassword: prasen123
+
+dn: cn=debrup,ou=People,dc=cloudcafe,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+sn: kar
+cn: debrup
+mail: debrupkar@cloudcafe.com
+userpassword: debrup123
+
+# Group definitions.
+
+dn: ou=Groups,dc=cloudcafe,dc=org
+objectClass: organizationalUnit
+ou: Groups
+
+dn: cn=admins,ou=Groups,dc=cloudcafe,dc=org
+objectClass: groupOfNames
+cn: admins
+member: cn=debrup,ou=People,dc=cloudcafe,dc=org
+member: cn=prasen,ou=People,dc=cloudcafe,dc=org
+
+dn: cn=developers,ou=Groups,dc=cloudcafe,dc=org
+objectClass: groupOfNames
+cn: developers
+member: cn=prasen,ou=People,dc=cloudcafe,dc=org
