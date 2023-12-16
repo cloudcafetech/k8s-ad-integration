@@ -17,8 +17,8 @@ kubectl create -f dashboard-ing.yaml
 
 # Certificate Generate
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/certgen.sh
-sed -i -e "s|172.30.2.2|$PUBIPN|g" certgen.sh
-sed -i -e "s|172.30.1.2|$PUBIPM|g" certgen.sh
+sed -i -e "s|172.30.2.2|$PUBIPM|g" certgen.sh
+sed -i -e "s|172.30.1.2|$PUBIPN|g" certgen.sh
 chmod 755 certgen.sh
 ./certgen.sh
 
