@@ -3,7 +3,8 @@
 # Run LDAP Server
 
 apt install ldap-utils -y
-HIP=`ip -o -4 addr list enp1s0 | awk '{print $4}' | cut -d/ -f1`
+#HIP=`ip -o -4 addr list enp1s0 | awk '{print $4}' | cut -d/ -f1`
+HIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 
 # Install Docker
 if ! command -v docker &> /dev/null;
@@ -13,12 +14,14 @@ then
   if [[ $(uname -a | grep amzn) ]]; then
     echo "Installing Docker for Amazon Linux"
     amazon-linux-extras install docker -y
+  elif [[ -n $(uname -a | grep -iE 'ubuntu|debian') ]]; then 
+     apt install docker-ce -y
   else
-    curl -s https://releases.rancher.com/install-docker/19.03.sh | sh
-  fi    
+      yum install docker-ce docker-ce-cli -y
+      systemctl start docker
+      systemctl enable docker
+  fi
 fi
-systemctl start docker
-systemctl enable docker
 
 docker run --restart=always --name ldap-server -p 389:389 -p 636:636 \
 --env LDAP_TLS_VERIFY_CLIENT=try \
