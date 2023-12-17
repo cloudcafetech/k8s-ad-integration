@@ -39,7 +39,8 @@ kubectl create ns auth-system
 kubectl create ns kubernetes-dashboard
 # Secret for Dex Ingress
 kubectl create secret tls dex --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
-# Secret for Gangway Ingress
+# Secret for Gangway 
+kubectl create secret generic gangway-key --from-literal=sesssionkey=$(openssl rand -base64 32) -n auth-system
 kubectl create secret tls gangway --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
 # Secret for Kubernetes Dashboard external TLS Ingress
 kubectl create secret tls k8s-dashboard-external-tls --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
