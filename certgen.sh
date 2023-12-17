@@ -37,8 +37,10 @@ openssl x509 -req -in ssl/tls.csr -CA ssl/ca.crt -CAkey ssl/ca.key -CAcreateseri
 # Namespace for Dex
 kubectl create ns auth-system 
 kubectl create ns kubernetes-dashboard
-# Secret for Dex
+# Secret for Dex Ingress
 kubectl create secret tls dex --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
+# Secret for Gangway Ingress
+kubectl create secret tls gangway --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
 # Secret for Kubernetes Dashboard external TLS Ingress
 kubectl create secret tls k8s-dashboard-external-tls --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
 # Secret for Kubernetes Dashboard TLS Ingress
