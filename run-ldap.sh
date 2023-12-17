@@ -9,7 +9,7 @@ HIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 # Install Docker
 if ! command -v docker &> /dev/null;
 then
-  echo "MISSING REQUIREMENT: docker engine could not be found on your system. Please install docker engine to continue: https://docs.docker.com/get-docker/"
+  echo "MISSING REQUIREMENT: docker engine could not be found on your system. Please install docker engine"
   echo "Trying to Install Docker..."
   if [[ $(uname -a | grep amzn) ]]; then
     echo "Installing Docker for Amazon Linux"
