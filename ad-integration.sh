@@ -50,7 +50,7 @@ sed -i -e "s|172.30.1.2|$PUBIPN|g" oauth-proxy.yaml
 kubectl create -f oauth-proxy.yaml
 
 # Create the role binding for different users
-#kubectl create rolebinding mkar-view-default --clusterrole=view --user=mkar -n default
+kubectl create rolebinding titli-view-default --clusterrole=view --user=titlikar@cloudcafe.org -n default
 kubectl create clusterrolebinding debrupkar-view --user=debrupkar@cloudcafe.org --clusterrole=view
 kubectl create clusterrolebinding prasenkar-admin --user=prasenkar@cloudcafe.org --clusterrole=admin
 
