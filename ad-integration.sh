@@ -6,6 +6,7 @@ PUBIPM=31.128.11.45
 PUBIPN=21.20.11.46
 LDAPIP=172.168.1.1
 MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
+WORKERIP=172.168.5.1
 
 ### AD Integration ###
 
@@ -13,7 +14,8 @@ MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/certgen.sh
 sed -i -e "s|172.30.2.2|$PUBIPM|g" certgen.sh
 sed -i -e "s|172.30.1.2|$PUBIPN|g" certgen.sh
-sed -i -e "s|oauth-proxy.172.30.1.2.nip.io|oauth-proxy.$MASTERIP.nip.io|g" certgen.sh
+sed -i -e "s|oauth-proxy.172.30.1.2.nip.io|auth.$MASTERIP.nip.io|g" certgen.sh
+sed -i -e "s|oauth-proxy.172.30.2.2.nip.io|auth.$WORKERIP.nip.io|g" certgen.sh
 chmod 755 certgen.sh
 ./certgen.sh
 
