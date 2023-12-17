@@ -42,4 +42,5 @@ kubectl create secret tls dex --cert=ssl/tls.crt --key=ssl/tls.key -n auth-syste
 # Secret for Kubernetes Dashboard external TLS Ingress
 kubectl create secret tls k8s-dashboard-external-tls --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
 # Secret for Kubernetes Dashboard TLS Ingress
-kubectl create secret tls k8s-dashboard-tls --cert=ssl/tls.crt --key=ssl/tls.key -n kubernetes-dashboard
+kubectl delete secret kubernetes-dashboard-certs -n kubernetes-dashboard
+kubectl create secret generic kubernetes-dashboard-certs --from-file=tls.crt=$HOME/ssl/tls.crt --from-file=tls.key=$HOME/ssl/tls.key -n kubernetes-dashboard
