@@ -9,19 +9,20 @@ MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 
 ### AD Integration ###
 
+# Certificate Generate
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/certgen.sh
+sed -i -e "s|172.30.2.2|$PUBIPM|g" certgen.sh
+sed -i -e "s|172.30.1.2|$PUBIPN|g" certgen.sh
+sed -i -e "s|oauth-proxy.172.30.1.2.nip.io|oauth-proxy.$MASTERIP.nip.io|g" certgen.sh
+chmod 755 certgen.sh
+./certgen.sh
+
 # Setup K8s Dashboard
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ui.yaml
 kubectl apply -f dashboard-ui.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dashboard/dashboard-ing.yaml
 sed -i -e "s|172.30.2.2|$PUBIPM|g" dashboard-ing.yaml
 kubectl create -f dashboard-ing.yaml
-
-# Certificate Generate
-wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/certgen.sh
-sed -i -e "s|172.30.2.2|$PUBIPM|g" certgen.sh
-sed -i -e "s|172.30.1.2|$PUBIPN|g" certgen.sh
-chmod 755 certgen.sh
-./certgen.sh
 
 # Dex Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/dex-ldap-cm.yaml
