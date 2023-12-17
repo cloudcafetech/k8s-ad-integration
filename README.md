@@ -137,12 +137,40 @@ chmod 755 dashboard.sh
 
 ### Create the role binding for different users
 ```
-kubectl create rolebinding pkar-admin --clusterrole=admin --user=pkar
 kubectl create rolebinding mkar-view-default --clusterrole=view --user=mkar -n default
-kubectl create rolebinding read-only-user-view --clusterrole=view --user=read-only-user
+kubectl create clusterrolebinding debrupkar-view --clusterrole=view --user=debrupkar@cloudcafe.org 
+kubectl create clusterrolebinding prasenkar-admin --clusterrole=admin --user=prasenkar@cloudcafe.org 
 ```
 
 ### Testing
+
+Using Dashboard UI install below yaml with different User Login
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+** OR ** 
+
 ```
 kubectl auth can-i get pods             
 kubectl auth can-i get deployments      
