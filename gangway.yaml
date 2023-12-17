@@ -7,11 +7,11 @@ data:
   gangway.yaml: |
     clusterName: "Kubernetes"
     apiServerURL: "https://10.182.0.13:6443"
-    authorizeURL: "https://auth.34.125.122.61.nip.io/auth"  
-    tokenURL: "https://auth.34.125.122.61.nip.io/token"
+    authorizeURL: "https://auth.172.30.1.2.nip.io/auth"  
+    tokenURL: "https://auth.172.30.1.2.nip.io/token"
     clientID: "oidc-auth-client"
     clientSecret: "secret"
-    redirectURL: "https://kubectl.34.125.122.61.nip.io/callback"
+    redirectURL: "https://kubectl.172.30.1.2.nip.io/callback"
     scopes: ["openid", "profile", "email", "offline_access"]
     usernameClaim: "email"
     emailClaim: "email"
@@ -106,9 +106,9 @@ spec:
   tls:
   - secretName: gangway
     hosts:
-    - kubectl.34.125.122.61.nip.io
+    - kubectl.172.30.1.2.nip.io
   rules:
-  - host: kubectl.34.125.122.61.nip.io
+  - host: kubectl.172.30.1.2.nip.io
     http:
       paths:
         - path: /
