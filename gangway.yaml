@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gangway
+  namespace: auth-system
+data:
+  gangway.yaml: |
+    clusterName: "Kubernetes"
+    apiServerURL: "https://10.182.0.13:6443"
+    authorizeURL: "https://auth.34.125.122.61.nip.io/auth"  
+    tokenURL: "https://auth.34.125.122.61.nip.io/token"
+    clientID: "oidc-auth-client"
+    clientSecret: "secret"
+    redirectURL: "https://kubectl.34.125.122.61.nip.io/callback"
+    scopes: ["openid", "profile", "email", "offline_access"]
+    usernameClaim: "email"
+    emailClaim: "email"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gangway
+  name: gangway
+  namespace: auth-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gangway
+  template:
+    metadata:
+      labels:
+        app: gangway
+    spec:
+      containers:
+      - command:
+        - gangway
+        - -config
+        - /gangway/gangway.yaml
+        env:
+        - name: GANGWAY_SESSION_SECURITY_KEY
+          valueFrom:
+            secretKeyRef:
+              key: sesssionkey
+              name: gangway-key
+        image: gcr.io/heptio-images/gangway:v2.0.0
+        imagePullPolicy: Always
+        name: gangway
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - mountPath: /etc/ssl/certs
+          name: certs
+        - mountPath: /gangway/
+          name: gangway
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: gangway
+        name: gangway
+      - name: certs
+        secret:
+          defaultMode: 420
+          secretName: gangway
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gangway
+  name: gangway-svc
+  namespace: auth-system
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: gangway
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gangway
+  namespace: auth-system
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - secretName: gangway
+    hosts:
+    - kubectl.34.125.122.61.nip.io
+  rules:
+  - host: kubectl.34.125.122.61.nip.io
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: gangway-svc
+              port:
+                number: 80
