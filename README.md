@@ -137,7 +137,7 @@ chmod 755 dashboard.sh
 
 ### Create the role binding for different users
 ```
-kubectl create rolebinding mkar-view-default --clusterrole=view --user=mkar -n default
+kubectl create rolebinding titli-view-default --clusterrole=view --user=titlikar@cloudcafe.org -n default
 kubectl create clusterrolebinding debrupkar-view --clusterrole=view --user=debrupkar@cloudcafe.org 
 kubectl create clusterrolebinding prasenkar-admin --clusterrole=admin --user=prasenkar@cloudcafe.org 
 ```
