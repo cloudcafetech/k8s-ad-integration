@@ -5,7 +5,7 @@
 PUBIPM=31.128.11.45
 PUBIPN=21.20.11.46
 LDAPIP=172.168.1.1
-MASTERIP=172.168.2.22
+MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 
 ### AD Integration ###
 
