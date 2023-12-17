@@ -1,0 +1,17 @@
+# New user definitions
+
+dn: cn=titli,ou=People,dc=cloudcafe,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+sn: kar
+cn: titli
+mail: titlikar@cloudcafe.org
+userpassword: titli123
+
+dn: cn=rajat,ou=People,dc=cloudcafe,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+sn: kar
+cn: rajat
+mail: rajatkar@cloudcafe.org
+userpassword: rajat123
