@@ -47,9 +47,9 @@ sed -i -e "s|172.30.1.2|$PUBIPN|g" oauth-proxy.yaml
 kubectl create -f oauth-proxy.yaml
 
 # Create the role binding for different users
-kubectl create rolebinding pkar-admin --clusterrole=admin --user=pkar
-kubectl create rolebinding mkar-view-default --clusterrole=view --user=mkar -n default
-kubectl create rolebinding read-only-user-view --clusterrole=view --user=read-only-user
+#kubectl create rolebinding mkar-view-default --clusterrole=view --user=mkar -n default
+kubectl create clusterrolebinding debrupkar-view --user=debrupkar@cloudcafe.org --clusterrole=view
+kubectl create clusterrolebinding prasenkar-admin --user=prasenkar@cloudcafe.org --clusterrole=admin
 
 # Copy Certificate & edit the Kubernetes API configuration
 cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
