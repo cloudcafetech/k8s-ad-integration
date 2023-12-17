@@ -51,8 +51,9 @@ kubectl create -f oauth-proxy.yaml
 
 # Create the role binding for different users
 kubectl create rolebinding titli-view-default --clusterrole=view --user=titlikar@cloudcafe.org -n default
-kubectl create clusterrolebinding debrupkar-view --user=debrupkar@cloudcafe.org --clusterrole=view
-kubectl create clusterrolebinding prasenkar-admin --user=prasenkar@cloudcafe.org --clusterrole=admin
+kubectl create rolebinding rajat-admin-default --clusterrole=admin --user=rajatkar@cloudcafe.org -n default
+kubectl create clusterrolebinding debrupkar-view --clusterrole=view --user=debrupkar@cloudcafe.org 
+kubectl create clusterrolebinding prasenkar-admin --clusterrole=admin --user=prasenkar@cloudcafe.org
 
 # Copy Certificate & edit the Kubernetes API configuration
 cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
