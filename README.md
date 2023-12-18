@@ -116,10 +116,11 @@ spec:
 ...
 ```
 
-### Check if APIServer POD Up & Running
+### Check if APIServer POD Up & Running without Error
 
 ```
 kubectl wait pods/kube-apiserver-controlplane --for=condition=Ready --timeout=2m -n kube-system
+kubectl logs pods/kube-apiserver-controlplane -n kube-system
 ```
 
 ### Install Oauth2 Proxy [Authentication using Providers (LDAP,AD etc)]
