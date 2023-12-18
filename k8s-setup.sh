@@ -149,6 +149,20 @@ kubectl scale --replicas=2 deployment/ingress-nginx-controller -n ingress-nginx
 #kubectl create ns monitoring
 #kubectl create -f kubemon.yaml -n monitoring
 
+### AD Integration
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ad-integration.sh
+chmod 755 ad-integration.sh
+#./ad-integration.sh
+
+# Setup K8SGPT
+if [[ "$OS" == "Ubuntu" ]]; then
+ curl -LO https://github.com/k8sgpt-ai/k8sgpt/releases/download/v0.3.21/k8sgpt_amd64.deb 
+ sudo dpkg -i k8sgpt_amd64.deb
+else
+ curl -LO https://github.com/k8sgpt-ai/k8sgpt/releases/download/v0.3.21/k8sgpt_amd64.rpm
+ sudo rpm -ivh -i k8sgpt_amd64.rpm
+fi
+
 # Install krew
 set -x; cd "$(mktemp -d)" &&
 OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
@@ -167,20 +181,3 @@ kubectl krew install ns
 kubectl krew install oidc-login
 
 echo 'export PATH="${PATH}:${HOME}/.krew/bin"' >> /root/.bash_profile
-
-kubectl get nodes
-
-# Setup K8SGPT
-if [[ "$OS" == "Ubuntu" ]]; then
- curl -LO https://github.com/k8sgpt-ai/k8sgpt/releases/download/v0.3.21/k8sgpt_amd64.deb 
- sudo dpkg -i k8sgpt_amd64.deb
-else
- curl -LO https://github.com/k8sgpt-ai/k8sgpt/releases/download/v0.3.21/k8sgpt_amd64.rpm
- sudo rpm -ivh -i k8sgpt_amd64.rpm
-fi
-
-### AD Integration
-
-wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ad-integration.sh
-chmod 755 ad-integration.sh
-#./ad-integration.sh
