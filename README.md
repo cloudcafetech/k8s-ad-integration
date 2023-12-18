@@ -173,6 +173,14 @@ spec:
 ** OR ** 
 
 ```
+touch .kube/config-debrup 
+export KUBECONFIG=$HOME/.kube/config-debrup
+```
+
+In browser run ```https://kubectl.172.30.2.2.nip.io``` first authenticate then copy certificate and kubectl command then execute. 
+
+```
+more $HOME/.kube/config-debrup
 kubectl auth can-i get pods             
 kubectl auth can-i get deployments      
 kubectl auth can-i create deployments  
