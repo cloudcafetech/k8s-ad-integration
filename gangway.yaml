@@ -15,8 +15,8 @@ data:
     scopes: ["openid", "profile", "email", "offline_access"]
     usernameClaim: "email"
     emailClaim: "email"
+    # For insecure (selfsign), 509 certificate error  
     trustedCAPath: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-    #trustedCAPath: "/etc/ssl/certs/tls.crt"
 ---
 apiVersion: apps/v1
 kind: Deployment
