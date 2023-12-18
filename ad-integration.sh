@@ -55,6 +55,9 @@ sed -i -e "s|10.182.0.13|$MASTERIP|g" gangway.yaml
 sed -i -e "s|172.30.1.2|$PUBIPM|g" gangway.yaml
 kubectl create -f gangway.yaml
 
+# Download LDAP new user ldif file
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/new-add-user.ldif
+
 # Create the role binding for different users
 kubectl create rolebinding titli-view-default --clusterrole=view --user=titlikar@cloudcafe.org -n default
 kubectl create rolebinding rajat-admin-default --clusterrole=admin --user=rajatkar@cloudcafe.org -n default
