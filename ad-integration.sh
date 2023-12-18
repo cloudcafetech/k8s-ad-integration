@@ -14,8 +14,6 @@ WORKERIP=172.168.5.1
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/certgen.sh
 sed -i -e "s|172.30.2.2|$PUBIPM|g" certgen.sh
 sed -i -e "s|172.30.1.2|$PUBIPN|g" certgen.sh
-sed -i -e "s|oauth-proxy.$PUBIPM.nip.io|auth.$MASTERIP.nip.io|g" certgen.sh
-sed -i -e "s|oauth-proxy.$PUBIPN.nip.io|auth.$WORKERIP.nip.io|g" certgen.sh
 chmod 755 certgen.sh
 ./certgen.sh
 
@@ -33,7 +31,6 @@ sed -i -e "s|172.30.2.2|$PUBIPM|g" dex-ldap-cm.yaml
 sed -i -e "s|172.30.1.2|$LDAPIP|g" dex-ldap-cm.yaml
 sed -i -e "s|:30443||g" dex-ldap-cm.yaml
 sed -i -e "s|172.30.2.2|$PUBIPM|g" dex.yaml
-sed -i -e "s|master-ip|$MASTERIP|g" dex.yaml
 kubectl create -f dex-ldap-cm.yaml
 kubectl create -f dex.yaml
 
