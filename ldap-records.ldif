@@ -20,14 +20,6 @@ cn: debrup
 mail: debrupkar@cloudcafe.org
 userpassword: debrup123
 
-dn: cn=titli,ou=People,dc=cloudcafe,dc=org
-objectClass: person
-objectClass: inetOrgPerson
-sn: kar
-cn: titli
-mail: titlikar@cloudcafe.org
-userpassword: titli123
-
 # Group definitions
 
 dn: ou=Groups,dc=cloudcafe,dc=org
