@@ -51,6 +51,7 @@ kubectl create -f oauth-proxy.yaml
 
 # Gangway Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/gangway.yaml
+sed -i -e "s|10.182.0.13|$MASTERIP|g" gangway.yaml
 sed -i -e "s|172.30.1.2|$PUBIPM|g" gangway.yaml
 kubectl create -f gangway.yaml
 
