@@ -19,11 +19,10 @@ DNS.1 = auth.172.30.1.2.nip.io
 DNS.2 = auth.172.30.2.2.nip.io
 DNS.3 = dashboard.172.30.1.2.nip.io
 DNS.4 = dashboard.172.30.2.2.nip.io
-DNS.5 = oauth-proxy.172.30.1.2.nip.io
-DNS.6 = oauth-proxy.172.30.2.2.nip.io
+DNS.5 = kubectl.172.30.1.2.nip.io
+DNS.6 = kubectl.172.30.2.2.nip.io
 DNS.7 = k8s-dashboard.172.30.1.2.nip.io
 DNS.8 = k8s-dashboard.172.30.2.2.nip.io
-DNS.9 = kubectl.172.30.1.2.nip.io
 IP.1 = 172.30.1.2
 IP.2 = 172.30.2.2
 EOF
