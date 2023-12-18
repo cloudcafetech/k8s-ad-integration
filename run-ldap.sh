@@ -15,7 +15,9 @@ then
     echo "Installing Docker for Amazon Linux"
     amazon-linux-extras install docker -y
   elif [[ -n $(uname -a | grep -iE 'ubuntu|debian') ]]; then 
-     apt install docker-ce -y
+     apt update -y
+     apt install docker.io -y
+     snap install docker     
   else
       yum install docker-ce docker-ce-cli -y
       systemctl start docker
