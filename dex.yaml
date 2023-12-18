@@ -147,29 +147,3 @@ spec:
               name: dex
               port:
                 number: 5556
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: dex-internal
-  namespace: auth-system
-  annotations:
-    kubernetes.io/tls-acme: "true"
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-spec:
-  ingressClassName: nginx
-  tls:
-  - secretName: dex
-    hosts:
-    - auth.master-ip.nip.io
-  rules:
-  - host: auth.master-ip.nip.io
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: dex
-              port:
-                number: 5556                
