@@ -64,6 +64,7 @@ kubectl create clusterrolebinding prasenkar-admin --clusterrole=admin --user=pra
 cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
 
 # Status
+kubectl get po -n ingress-nginx 
 kubectl get po -n kubernetes-dashboard
 kubectl get po -n auth-system
 kubectl get ing -A
