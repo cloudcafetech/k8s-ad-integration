@@ -67,6 +67,19 @@ cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
 kubectl get po -n ingress-nginx 
 kubectl get po -n kubernetes-dashboard
 kubectl get po -n auth-system
+
+# API manifest file modification
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/add-line.txt
+sed -i -e "s|172.30.1.2|$PUBIPM|g" add-line.txt
+sed -i '/--allow-privileged=true/r add-line.txt' /etc/kubernetes/manifests/kube-apiserver.yaml
+sleep 45
+
+# Check for API server POD UP & Running without error
+echo "Waiting for API server POD UP & Running without Error .."
+APIPOD=$(kubectl get pod -n kube-system | grep kube-apiserver | awk '{print $1}')
+kubectl wait pods/$APIPOD --for=condition=Ready --timeout=5m -n kube-system
+kubectl logs $APIPOD -n kube-system
+
 kubectl get ing -A
 
-echo "Follow URL - https://github.com/cloudcafetech/k8s-ad-integration/tree/main#modify-api-server-manifest-in-all-master-nodes"
+#echo "Follow URL - https://github.com/cloudcafetech/k8s-ad-integration/tree/main#modify-api-server-manifest-in-all-master-nodes"
