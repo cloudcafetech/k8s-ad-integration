@@ -45,11 +45,21 @@ sed -i -e "s|172.30.2.2|$PUBIPM|g" oauth-proxy.yaml
 sed -i -e "s|172.30.1.2|$PUBIPN|g" oauth-proxy.yaml
 kubectl create -f oauth-proxy.yaml
 
+# Check for OAuth POD UP
+echo "Waiting for OAuth POD ready .."
+OAPOD=$(kubectl get pod -n auth-system | grep oauth | awk '{print $1}')
+kubectl wait pods/$OAPOD --for=condition=Ready --timeout=5m -n auth-system
+
 # Gangway Deployment
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/gangway.yaml
 sed -i -e "s|10.182.0.13|$MASTERIP|g" gangway.yaml
 sed -i -e "s|172.30.1.2|$PUBIPM|g" gangway.yaml
 kubectl create -f gangway.yaml
+
+# Check for Gangway POD UP
+echo "Waiting for Gangway POD ready .."
+GWPOD=$(kubectl get pod -n auth-system | grep gangway | awk '{print $1}')
+kubectl wait pods/$GWPOD --for=condition=Ready --timeout=5m -n auth-system
 
 # Download LDAP new user ldif file
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/new-add-user.ldif
