@@ -6,7 +6,6 @@ PUBIPM=31.128.11.45
 PUBIPN=21.20.11.46
 LDAPIP=172.168.1.1
 MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
-WORKERIP=172.168.5.1
 
 ### AD Integration ###
 
@@ -63,5 +62,10 @@ kubectl create clusterrolebinding prasenkar-admin --clusterrole=admin --user=pra
 
 # Copy Certificate & edit the Kubernetes API configuration
 cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
+
+# Status
+kubectl get po -n kubernetes-dashboard
+kubectl get po -n auth-system
+kubectl get ing -A
 
 echo "Follow URL - https://github.com/cloudcafetech/k8s-ad-integration/tree/main#modify-api-server-manifest-in-all-master-nodes"
