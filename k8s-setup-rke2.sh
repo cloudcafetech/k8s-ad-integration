@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Kubernetes host setup script using RKE2 for Debian & Redhat distribution
 
-#NODE=M
+NODE=M
 PUBIPM=34.125.211.110
 MASTERIP=1.1.1.1
+#MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 
 MASTERN=`hostname`
 K8S_VER=1.26.0-00
