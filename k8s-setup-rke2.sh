@@ -114,9 +114,9 @@ sleep 10
 kubectl scale --replicas=2 deployment/ingress-nginx-controller -n ingress-nginx
 
 # Setup Monitoring
-#wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
-#sed -i "s/34.125.24.130/$PUBIPM/g" kubemon.yaml
-#kubectl create ns monitoring
+wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
+sed -i "s/34.125.24.130/$PUBIPM/g" kubemon.yaml
+kubectl create ns monitoring
 #kubectl create -f kubemon.yaml -n monitoring
 
 ### AD Integration
