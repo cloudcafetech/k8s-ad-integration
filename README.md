@@ -47,10 +47,16 @@ https://killercoda.com/playgrounds/scenario/kubernetes
 
 **OR**
 
+- KUBEADM
 ```
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/k8s-setup.sh
 chmod 755 k8s-setup.sh
 ./k8s-setup.sh
+```
+- RKE2
+```
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/k8s-setup-rke2.sh
+chmod 755 k8s-setup-rke2.sh
 ```
 
 ### Setup Ingress
