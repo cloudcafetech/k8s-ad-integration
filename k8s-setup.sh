@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Kubernetes host setup script using Kubeadm for Debian & Redhat distribution
 
+PUBIPM=34.125.211.110
 K8S_VER=1.26.0-00
 
 if [[ -n $(uname -a | grep -iE 'ubuntu|debian') ]]; then 
@@ -144,9 +145,9 @@ kubectl scale --replicas=2 deployment/ingress-nginx-controller -n ingress-nginx
 #kubectl apply -f https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/monitoring/metric-server.yaml
 
 # Setup Monitoring
-#wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
-#sed -i "s/34.125.24.130/$HIP/g" kubemon.yaml
-#kubectl create ns monitoring
+wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
+sed -i "s/34.125.24.130/$PUBIPM/g" kubemon.yaml
+kubectl create ns monitoring
 #kubectl create -f kubemon.yaml -n monitoring
 
 ### AD Integration
