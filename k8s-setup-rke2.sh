@@ -102,9 +102,9 @@ fi
 
 kubectl get nodes
 
-MASTER=`kubectl get nodes | grep control-plane | awk '{print $1}'`
-kubectl taint nodes $MASTER node-role.kubernetes.io/control-plane-
-kubectl get nodes -o json | jq .items[].spec.taints
+#MASTER=`kubectl get nodes | grep control-plane | awk '{print $1}'`
+#kubectl taint nodes $MASTER node-role.kubernetes.io/control-plane-
+#kubectl get nodes -o json | jq .items[].spec.taints
 
 # Setup Ingress
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/deploy.yaml
@@ -115,7 +115,7 @@ kubectl scale --replicas=2 deployment/ingress-nginx-controller -n ingress-nginx
 
 # Setup Monitoring
 #wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
-#sed -i "s/34.125.24.130/$HIP/g" kubemon.yaml
+#sed -i "s/34.125.24.130/$PUBIPM/g" kubemon.yaml
 #kubectl create ns monitoring
 #kubectl create -f kubemon.yaml -n monitoring
 
