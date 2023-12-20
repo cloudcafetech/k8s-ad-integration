@@ -6,6 +6,7 @@ PUBIPM=31.128.11.45
 PUBIPN=21.20.11.46
 LDAPIP=172.168.1.1
 MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
+#CLUSTYPE=rke2
 
 ### AD Integration ###
 
@@ -70,19 +71,26 @@ kubectl create rolebinding rajat-admin-default --clusterrole=admin --user=rajatk
 kubectl create clusterrolebinding debrupkar-view --clusterrole=view --user=debrupkar@cloudcafe.org 
 kubectl create clusterrolebinding prasenkar-admin --clusterrole=admin --user=prasenkar@cloudcafe.org
 
-# Copy Certificate & edit the Kubernetes API configuration
-cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
-
 # Status
 kubectl get po -n ingress-nginx 
 kubectl get po -n kubernetes-dashboard
 kubectl get po -n auth-system
 
-# API manifest file modification
-wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/add-line.txt
-sed -i -e "s|172.30.1.2|$PUBIPM|g" add-line.txt
-sed -i '/--allow-privileged=true/r add-line.txt' /etc/kubernetes/manifests/kube-apiserver.yaml
-sleep 45
+if [[ "$CLUSTYPE" == "rke2" ]]; then
+  # Copy Certificate & edit the Kubernetes API configuration for RKE2
+  cp ssl/ca.crt /var/lib/rancher/rke2/server/tls/dex-ca.crt
+  wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/add-line-rke2.txt
+  sed -i -e "s|172.30.1.2|$PUBIPM|g" add-line-rke2.txt
+  sed -i '/disable:/i add-line.txt' /etc/rancher/rke2/config.yaml
+  sleep 45
+else
+  # Copy Certificate & edit the Kubernetes API configuration for Kubeadm
+  cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
+  wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/add-line.txt
+  sed -i -e "s|172.30.1.2|$PUBIPM|g" add-line.txt
+  sed -i '/--allow-privileged=true/r add-line-rke2.txt' /etc/kubernetes/manifests/kube-apiserver.yaml  
+  sleep 45
+fi
 
 # Check for API server POD UP & Running without error
 echo "Waiting for API server POD UP & Running without Error .."
