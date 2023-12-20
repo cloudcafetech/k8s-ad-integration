@@ -121,9 +121,6 @@ export KUBECONFIG=$HOME/admin.conf
 echo "export KUBECONFIG=$HOME/admin.conf" >> $HOME/.bash_profile
 echo "alias oc=/usr/bin/kubectl" >> /root/.bash_profile
 
-#mkdir setup-files
-#cd setup-files
-
 wget -q https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 kubectl create -f kube-flannel.yml
 
@@ -150,6 +147,16 @@ sed -i "s/34.125.24.130/$PUBIPM/g" kubemon.yaml
 kubectl create ns monitoring
 #kubectl create -f kubemon.yaml -n monitoring
 #kubectl scale statefulset.apps/kubemon-grafana -n monitoring --replicas=1
+
+# Setup Logging
+wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/kubelog.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/loki.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/promtail.yaml
+kubectl create ns logging
+kubectl create secret generic loki -n logging --from-file=loki.yaml
+#kubectl create -f kubelog.yaml -n logging
+#kubectl delete ds loki-fluent-bit-loki -n logging
+#kubectl create -f promtail.yaml -n logging
 
 ### AD Integration
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ad-integration.sh
