@@ -68,7 +68,8 @@ EOF
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v$K8S_VER_MJ sh -
 systemctl enable rke2-server.service
 systemctl start rke2-server.service
-sleep 120
+echo "Check another window for Container UP"
+sleep 20
 
 mkdir ~/.kube
 ln -s /etc/rancher/rke2/rke2.yaml ~/.kube/config  
@@ -90,11 +91,15 @@ EOF
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v$K8S_VER_MJ INSTALL_RKE2_TYPE="agent" sh -
 systemctl enable rke2-agent.service
 systemctl start rke2-agent.service
+echo "Check another window for Container UP"
+sleep 20
+ln -s /var/lib/rancher/rke2/agent/etc/crictl.yaml /etc/crictl.yaml
+export PATH=/var/lib/rancher/rke2/bin:$PATH
+echo "export PATH=/var/lib/rancher/rke2/bin:$PATH" >> $HOME/.bash_profile
 exit
 
 fi
 
-sleep 20
 kubectl get nodes
 
 MASTER=`kubectl get nodes | grep control-plane | awk '{print $1}'`
