@@ -81,14 +81,15 @@ if [[ "$CLUSTYPE" == "rke2" ]]; then
   cp ssl/ca.crt /var/lib/rancher/rke2/server/tls/dex-ca.crt
   wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/add-line-rke2.txt
   sed -i -e "s|172.30.1.2|$PUBIPM|g" add-line-rke2.txt
-  sed -i '/disable:/i add-line.txt' /etc/rancher/rke2/config.yaml
+  sed -i '/rke2-metrics-server/r add-line-rke2.txt' /etc/rancher/rke2/config.yaml
+  systemctl restart rke2-server.service  
   sleep 45
 else
   # Copy Certificate & edit the Kubernetes API configuration for Kubeadm
   cp ssl/ca.crt /etc/kubernetes/pki/dex-ca.crt
   wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/add-line.txt
   sed -i -e "s|172.30.1.2|$PUBIPM|g" add-line.txt
-  sed -i '/--allow-privileged=true/r add-line-rke2.txt' /etc/kubernetes/manifests/kube-apiserver.yaml  
+  sed -i '/--allow-privileged=true/r add-line.txt' /etc/kubernetes/manifests/kube-apiserver.yaml  
   sleep 45
 fi
 
