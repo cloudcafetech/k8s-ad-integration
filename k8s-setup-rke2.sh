@@ -120,8 +120,11 @@ kubectl wait pods/$INGPOD --for=condition=Ready --timeout=5m -n ingress-nginx
 
 # Setup Monitoring
 wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
+wget -q https://github.com/cloudcafetech/kubesetup/raw/master/monitoring/dashboard/pod-monitoring.json
+wget -q https://github.com/cloudcafetech/kubesetup/raw/master/monitoring/dashboard/kube-monitoring-overview.json
 sed -i "s/34.125.24.130/$PUBIPM/g" kubemon.yaml
 kubectl create ns monitoring
+kubectl create configmap grafana-dashboards -n monitoring --from-file=pod-monitoring.json --from-file=kube-monitoring-overview.json
 #kubectl create -f kubemon.yaml -n monitoring
 
 # Setup Logging
