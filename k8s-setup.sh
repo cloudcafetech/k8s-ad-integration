@@ -138,6 +138,11 @@ kubectl create -f deploy.yaml
 sleep 10
 kubectl scale --replicas=2 deployment/ingress-nginx-controller -n ingress-nginx
 
+# Check for Ingress POD UP
+echo "Waiting for Ingress POD ready .."
+INGPOD=`kubectl get pod -n ingress-nginx -o wide | grep ingress-nginx-controller | grep $(kubectl get no | grep control-plane | awk '{print $1}') | awk '{print $1}'`
+kubectl wait pods/$INGPOD --for=condition=Ready --timeout=5m -n ingress-nginx
+
 # Setup Metric Server
 #kubectl apply -f https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/monitoring/metric-server.yaml
 
@@ -146,7 +151,6 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.
 sed -i "s/34.125.24.130/$PUBIPM/g" kubemon.yaml
 kubectl create ns monitoring
 #kubectl create -f kubemon.yaml -n monitoring
-#kubectl scale statefulset.apps/kubemon-grafana -n monitoring --replicas=1
 
 # Setup Logging
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/kubelog.yaml
