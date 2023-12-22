@@ -7,6 +7,28 @@ metadata:
   name: ingress-nginx
 ---
 apiVersion: v1
+data:
+  allow-snippet-annotations: "true"
+# use-proxy-protocol: "true"
+  proxy-body-size: 900m #https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/annotations.md#custom-max-body-size
+  log-format-escape-json: "true"
+  log-format-upstream: '{"proxy_protocol_addr": "$proxy_protocol_addr","remote_addr": "$remote_addr", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for",
+  "remote_user": "$remote_user", "time_local": "$time_local", "request" : "$request", "status": "$status", "body_bytes_sent": "$body_bytes_sent",
+  "http_referer":  "$http_referer", "http_user_agent": "$http_user_agent", "request_length" : "$request_length", "request_time" : "$request_time",
+  "proxy_upstream_name": "$proxy_upstream_name", "upstream_addr": "$upstream_addr",  "upstream_response_length": "$upstream_response_length",
+  "upstream_response_time": "$upstream_response_time", "upstream_status": "$upstream_status"}'  
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.8.2
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+---
+apiVersion: v1
 automountServiceAccountToken: true
 kind: ServiceAccount
 metadata:
@@ -319,20 +341,6 @@ subjects:
   namespace: ingress-nginx
 ---
 apiVersion: v1
-data:
-  allow-snippet-annotations: "true"
-kind: ConfigMap
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.8.2
-  name: ingress-nginx-controller
-  namespace: ingress-nginx
----
-apiVersion: v1
 kind: Service
 metadata:
   labels:
@@ -360,6 +368,9 @@ spec:
     nodePort: 30443
     protocol: TCP
     targetPort: https
+  - name: metrics
+    port: 10254
+    targetPort: metrics     
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: ingress-nginx
@@ -471,6 +482,8 @@ spec:
         - containerPort: 8443
           name: webhook
           protocol: TCP
+        - name: metrics
+          containerPort: 10254          
         readinessProbe:
           failureThreshold: 3
           httpGet:
