@@ -1,0 +1,31 @@
+verbose_logging = false
+
+[[servers]]
+host = "172.30.1.2"
+port = 389
+use_ssl = false
+start_tls = false
+ssl_skip_verify = true
+bind_dn = "cn=admin,dc=cloudcafe,dc=org"
+bind_password = 'StrongAdminPassw0rd'
+search_filter = "(&(cn=%s)(|(memberOf=CN=admin,OU=Groups,dc=cloudcafe,dc=org)(memberOf=CN=developers,OU=Groups,dc=cloudcafe,dc=org)))"
+search_base_dns = ["dc=cloudcafe,dc=org"]
+
+[servers.attributes]
+name = "givenName"
+surname = "sn"
+username = "cn"
+member_of = "memberOf"
+email =  "email"
+
+[[servers.group_mappings]]
+group_dn = "CN=admin,OU=Groups,dc=cloudcafe,dc=org"
+org_role = "Admin"
+
+[[servers.group_mappings]]
+group_dn = "CN=developers,OU=Groups,dc=cloudcafe,dc=org"
+org_role = "Viewer"
+
+[[servers.group_mappings]]
+group_dn = "*"
+org_role = "Viewer"
