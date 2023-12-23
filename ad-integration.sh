@@ -99,6 +99,13 @@ APIPOD=$(kubectl get pod -n kube-system | grep kube-apiserver | awk '{print $1}'
 kubectl wait pods/$APIPOD --for=condition=Ready --timeout=5m -n kube-system
 kubectl logs $APIPOD -n kube-system
 
+# Monitoring login (LDAP) enablement
+echo "Make sure monitoring is installed .."
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/kubemon-ingress.yaml
+sed -i -e "s|172.30.1.2|$PUBIPM|g" kubemon-ingress.yaml
+kubectl delete ing prom alert -n monitoring
+kubectl create -f kubemon-ingress.yaml
+
 kubectl get ing -A
 
 #echo "Follow URL - https://github.com/cloudcafetech/k8s-ad-integration/tree/main#modify-api-server-manifest-in-all-master-nodes"
