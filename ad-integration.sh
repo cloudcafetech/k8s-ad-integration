@@ -101,10 +101,22 @@ kubectl logs $APIPOD -n kube-system
 
 # Monitoring login (LDAP) enablement
 echo "Make sure monitoring is installed .."
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ldap.toml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/grafana-ldap.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/kubemon-ingress.yaml
 sed -i -e "s|172.30.1.2|$PUBIPM|g" kubemon-ingress.yaml
+sed -i -e "s|172.30.1.2|$LDAPIP|g" ldap.toml
 kubectl delete ing prom alert -n monitoring
 kubectl create -f kubemon-ingress.yaml
+kubectl delete deployment.apps/grafana -n monitoring
+kubectl delete cm grafana-ini -n monitoring
+kubectl create secret generic grafana-ldap-toml --from-file=ldap.toml=./ldap.toml -n monitoring
+kubectl create -f grafana-ldap.yaml -n monitoring
+
+# Check for Grafana POD UP & Running
+echo "Waiting for  Grafana POD UP & Running without Error .."
+GFPOD=$(kubectl get pod -n monitoring | grep grafana | awk '{print $1}')
+kubectl wait pods/$GFPOD --for=condition=Ready --timeout=2m -n monitoring
 
 kubectl get ing -A
 
