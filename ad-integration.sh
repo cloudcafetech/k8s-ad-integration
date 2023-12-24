@@ -63,11 +63,11 @@ GWPOD=$(kubectl get pod -n auth-system | grep gangway | awk '{print $1}')
 kubectl wait pods/$GWPOD --for=condition=Ready --timeout=5m -n auth-system
 
 # Download LDAP new user ldif file
-wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/new-add-user.ldif
+#wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/new-add-user.ldif
 
 # Create the role binding for different users
-kubectl create rolebinding titli-view-default --clusterrole=view --user=titlikar@cloudcafe.org -n default
-kubectl create rolebinding rajat-admin-default --clusterrole=admin --user=rajatkar@cloudcafe.org -n default
+#kubectl create rolebinding titli-view-default --clusterrole=view --user=titlikar@cloudcafe.org -n default
+#kubectl create rolebinding rajat-admin-default --clusterrole=admin --user=rajatkar@cloudcafe.org -n default
 kubectl create clusterrolebinding debrupkar-view --clusterrole=view --user=debrupkar@cloudcafe.org 
 kubectl create clusterrolebinding prasenkar-admin --clusterrole=admin --user=prasenkar@cloudcafe.org
 
@@ -119,5 +119,11 @@ GFPOD=$(kubectl get pod -n monitoring | grep grafana | awk '{print $1}')
 kubectl wait pods/$GFPOD --for=condition=Ready --timeout=2m -n monitoring
 
 kubectl get ing -A
+
+# New users insert script in LDAP
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/new-user-ldap.sh
+sed -i -e "s|172.168.1.1|$LDAPIP|g" new-user-ldap.sh
+chmod 755 new-user-ldap.sh
+#./new-user-ldap.sh
 
 #echo "Follow URL - https://github.com/cloudcafetech/k8s-ad-integration/tree/main#modify-api-server-manifest-in-all-master-nodes"
