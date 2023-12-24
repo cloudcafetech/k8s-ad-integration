@@ -1,10 +1,10 @@
 # Users definitions
 
-dn: ou=People,dc=cloudcafe,dc=org
+dn: ou=people,dc=cloudcafe,dc=org
 objectClass: organizationalUnit
-ou: People
+ou: people
 
-dn: cn=prasen,ou=People,dc=cloudcafe,dc=org
+dn: cn=prasen,ou=people,dc=cloudcafe,dc=org
 objectClass: person
 objectClass: inetOrgPerson
 sn: kar
@@ -12,7 +12,7 @@ cn: prasen
 mail: prasenkar@cloudcafe.org
 userpassword: prasen123
 
-dn: cn=debrup,ou=People,dc=cloudcafe,dc=org
+dn: cn=debrup,ou=people,dc=cloudcafe,dc=org
 objectClass: person
 objectClass: inetOrgPerson
 sn: kar
@@ -22,17 +22,17 @@ userpassword: debrup123
 
 # Group definitions
 
-dn: ou=Groups,dc=cloudcafe,dc=org
+dn: ou=groups,dc=cloudcafe,dc=org
 objectClass: organizationalUnit
-ou: Groups
+ou: groups
 
-dn: cn=admins,ou=Groups,dc=cloudcafe,dc=org
+dn: cn=admins,ou=groups,dc=cloudcafe,dc=org
 objectClass: groupOfNames
 cn: admins
-member: cn=debrup,ou=People,dc=cloudcafe,dc=org
-member: cn=prasen,ou=People,dc=cloudcafe,dc=org
+member: cn=debrup,ou=people,dc=cloudcafe,dc=org
+member: cn=prasen,ou=people,dc=cloudcafe,dc=org
 
-dn: cn=developers,ou=Groups,dc=cloudcafe,dc=org
+dn: cn=developers,ou=groups,dc=cloudcafe,dc=org
 objectClass: groupOfNames
 cn: developers
-member: cn=prasen,ou=People,dc=cloudcafe,dc=org
+member: cn=prasen,ou=people,dc=cloudcafe,dc=org
