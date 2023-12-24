@@ -9,7 +9,7 @@ ssl_skip_verify = true
 bind_dn = "cn=admin,dc=cloudcafe,dc=org"
 bind_password = 'StrongAdminPassw0rd'
 search_filter = "(mail=%s)"
-search_base_dns = ["ou=People,dc=cloudcafe,dc=org"]
+search_base_dns = ["ou=people,dc=cloudcafe,dc=org"]
 
 [servers.attributes]
 name = "givenName"
