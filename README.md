@@ -45,14 +45,14 @@ ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,
 
 - User search
 ```
-ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=debrup,ou=People,dc=cloudcafe,dc=org" -H ldap://$HIP
-ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=prasen,ou=People,dc=cloudcafe,dc=org" -H ldap://$HIP
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=debrup,ou=people,dc=cloudcafe,dc=org" -H ldap://$HIP
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=prasen,ou=people,dc=cloudcafe,dc=org" -H ldap://$HIP
 ```
 
 - Group search
 ```
-ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=developers,ou=Groups,dc=cloudcafe,dc=org" -H ldap://$HIP
-ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=admins,ou=Groups,dc=cloudcafe,dc=org" -H ldap://$HIP
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=developers,ou=groups,dc=cloudcafe,dc=org" -H ldap://$HIP
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=admins,ou=groups,dc=cloudcafe,dc=org" -H ldap://$HIP
 ```
 
 ## Create K8S Cluster
