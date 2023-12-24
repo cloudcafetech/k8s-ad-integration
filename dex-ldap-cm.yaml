@@ -42,7 +42,7 @@ data:
         bindPW: 'StrongAdminPassw0rd'
         usernamePrompt: Email Address
         userSearch:
-          baseDN: ou=People,dc=cloudcafe,dc=org
+          baseDN: ou=people,dc=cloudcafe,dc=org
           emailAttr: mail
           filter: (objectClass=person)
           idAttr: DN
