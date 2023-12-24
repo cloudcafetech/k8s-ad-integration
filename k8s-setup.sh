@@ -140,6 +140,7 @@ kubectl scale --replicas=2 deployment/ingress-nginx-controller -n ingress-nginx
 
 # Check for Ingress POD UP
 echo "Waiting for Ingress POD ready .."
+sleep 10
 INGPOD=`kubectl get pod -n ingress-nginx -o wide | grep ingress-nginx-controller | grep $(kubectl get no | grep control-plane | awk '{print $1}') | awk '{print $1}'`
 kubectl wait pods/$INGPOD --for=condition=Ready --timeout=5m -n ingress-nginx
 
