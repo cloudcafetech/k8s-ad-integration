@@ -36,9 +36,23 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/
 ldapadd -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -f ldap-records.ldif
 ```
 
-#### LDAP query (Verify)
+#### LDAP query 
+
+- Verify (All records)
 ```
 ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,dc=org" -w "StrongAdminPassw0rd"
+```
+
+- User search
+```
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=debrup,ou=People,dc=cloudcafe,dc=org" -H ldap://$HIP
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=prasen,ou=People,dc=cloudcafe,dc=org" -H ldap://$HIP
+```
+
+- Group search
+```
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=developers,ou=Groups,dc=cloudcafe,dc=org" -H ldap://$HIP
+ldapsearch -x -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -b "cn=admins,ou=Groups,dc=cloudcafe,dc=org" -H ldap://$HIP
 ```
 
 ## Create K8S Cluster
