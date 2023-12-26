@@ -17,7 +17,6 @@ then
   elif [[ -n $(uname -a | grep -iE 'ubuntu|debian') ]]; then 
      apt update -y
      apt install docker.io -y
-     snap install docker     
   else
       yum install docker-ce docker-ce-cli -y
       systemctl start docker
