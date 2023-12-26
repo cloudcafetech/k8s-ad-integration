@@ -28,7 +28,7 @@ if [[ "$OS" == "Ubuntu" ]]; then
  systemctl disable ufw
  # Install some of the tools, we’ll need on our servers.
  apt update
- apt install apt-transport-https ca-certificates gpg nfs-common curl wget git net-tools unzip go jq zip nmap telnet dos2unix apparmor ldap-utils -y
+ apt install apt-transport-https ca-certificates gpg nfs-common curl wget git net-tools unzip jq zip nmap telnet dos2unix apparmor ldap-utils -y
 
 ### For Redhat distribution
 else
