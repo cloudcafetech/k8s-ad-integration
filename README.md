@@ -202,9 +202,18 @@ In browser run ```https://kubectl.172.30.2.2.nip.io``` first authenticate then c
 
 ```
 more $HOME/.kube/config-debrup
-kubectl auth can-i get pods             
-kubectl auth can-i get deployments      
-kubectl auth can-i create deployments  
+
+kubectl auth can-i get pods
+
+kubectl auth can-i get pods -n default --as=debrupkar@cloudcafe.org   
+  
+kubectl auth can-i get deployments -n default --as=debrupkar@cloudcafe.org
+
+kubectl auth can-i get deployments --as=prasenkar@cloudcafe.org
+
+kubectl auth can-i create deployments -n default --as=debrupkar@cloudcafe.org
+
+kubectl auth can-i create deployments --as=prasenkar@cloudcafe.org
 ```
 
 [Ref#1](https://discuss.kubernetes.io/t/configure-oidc-with-dex-for-a-microk8s-cluster/18339)
