@@ -2,7 +2,7 @@
 # Kubernetes host setup script using RKE2 for Debian & Redhat distribution
 
 NODE=M
-PUBIPM=34.125.211.110
+PUBIPM=`curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'`
 MASTERIP=1.1.1.1
 #MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 
