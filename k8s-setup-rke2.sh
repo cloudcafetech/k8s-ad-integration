@@ -23,13 +23,14 @@ fi
 
 ### For Debian distribution
 if [[ "$OS" == "Ubuntu" ]]; then
- # Stopping and disabling firewalld by running the commands on all servers:
- systemctl stop ufw
- systemctl disable ufw
  # Install some of the tools, we’ll need on our servers.
- apt update
+ apt update -y
  apt install apt-transport-https ca-certificates gpg nfs-common curl wget git net-tools unzip jq zip nmap telnet dos2unix apparmor ldap-utils -y
-
+ # Stopping and disabling firewalld by running the commands on all servers
+ systemctl stop ufw
+ systemctl stop apparmor.service
+ systemctl disable --now ufw
+ systemctl disable --now apparmor.service 
 ### For Redhat distribution
 else
  # Stopping and disabling firewalld & SELinux
@@ -50,6 +51,8 @@ if [[ "$NODE" == "M" ]]; then
 cat << EOF >  /etc/rancher/rke2/config.yaml
 token: pkls-secret
 write-kubeconfig-mode: "0644"
+cluster-cidr: 192.168.0.0/16
+service-cidr: 192.167.0.0/16
 node-label:
 - "region=master"
 tls-san:
