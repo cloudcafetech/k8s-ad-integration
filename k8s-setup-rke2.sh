@@ -7,7 +7,8 @@ MASTERIP=1.1.1.1
 #MASTERIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 
 MASTERN=`hostname`
-K8S_VER=1.26.0-00
+K8S_VER=1.28.0-00
+#K8S_VER=1.26.0-00
 K8S_VER_MJ=$(echo "$K8S_VER" | cut -c 1-4)
 #K8S_LATEST=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt | cut -d v -f2)
 
