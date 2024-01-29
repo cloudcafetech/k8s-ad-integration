@@ -18,7 +18,8 @@ data:
       tlsKey: /etc/dex/tls/tls.key
     frontend:
       issuer: dex
-      logoURL: theme/logo.png
+      #logoURL: theme/logo.png
+      logoURL: https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/logo.png
       dir: ""
       theme: light
     telemetry:
