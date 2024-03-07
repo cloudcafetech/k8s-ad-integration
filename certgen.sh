@@ -46,4 +46,4 @@ kubectl create secret tls gangway --cert=ssl/tls.crt --key=ssl/tls.key -n auth-s
 kubectl create secret tls k8s-dashboard-external-tls --cert=ssl/tls.crt --key=ssl/tls.key -n auth-system
 # Secret for Kubernetes Dashboard TLS Ingress
 kubectl delete secret kubernetes-dashboard-certs -n kubernetes-dashboard
-kubectl create secret generic kubernetes-dashboard-certs --from-file=tls.crt=$HOME/ssl/tls.crt --from-file=tls.key=$HOME/ssl/tls.key -n kubernetes-dashboard
+kubectl create secret generic kubernetes-dashboard-certs --from-file=tls.crt=$(pwd)/ssl/tls.crt --from-file=tls.key=$(pwd)/ssl/tls.key -n kubernetes-dashboard
