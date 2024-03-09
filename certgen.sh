@@ -23,6 +23,7 @@ DNS.5 = kubectl.172.30.1.2.nip.io
 DNS.6 = kubectl.172.30.2.2.nip.io
 DNS.7 = k8s-dashboard.172.30.1.2.nip.io
 DNS.8 = k8s-dashboard.172.30.2.2.nip.io
+DNS.9 = minio-console.172.30.2.2.nip.io
 IP.1 = 172.30.1.2
 IP.2 = 172.30.2.2
 EOF
