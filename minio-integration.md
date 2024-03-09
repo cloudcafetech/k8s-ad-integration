@@ -1,9 +1,10 @@
 ## Minio Integration
 
-### Create Namespace & configmap from Dex CA certificate
+### Create Namespace, configmap from Dex CA certificate & tls certificate for ingress
 ```
 kubectl create ns minio-store
 kubectl create cm dex-cert --from-file=ssl/ca.crt -n minio-store
+kubectl create secret tls minio --cert=ssl/tls.crt --key=ssl/tls.key -n minio-store
 ```
 
 ### Deployment
