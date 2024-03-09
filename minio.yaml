@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  namespace: minio-store
+spec:
+  selector:
+    matchLabels:
+      app: minio
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+      - name: minio
+        image: quay.io/minio/minio:latest
+        command:
+        - /bin/bash
+        - -c
+        args:
+        - minio server /data --console-address :9090
+        env:
+        - name: MINIO_ROOT_USER
+          value: "minioadmin"
+        - name: MINIO_ROOT_PASSWORD
+          value: "admin@2675"
+        - name: MINIO_IDENTITY_OPENID_CONFIG_URL
+          value: "https://auth.34.125.51.84.nip.io/.well-known/openid-configuration"
+        - name: MINIO_IDENTITY_OPENID_CLIENT_ID
+          value: "oidc-auth-client"
+        - name: MINIO_IDENTITY_OPENID_CLIENT_SECRET
+          value: "secret"
+        - name: MINIO_IDENTITY_OPENID_REDIRECT_URI
+          value: "https://minio-console.34.125.51.84.nip.io/oauth_callback"
+        - name: MINIO_IDENTITY_OPENID_SCOPES
+          value: "groups,openid,email,profile"
+        - name: MINIO_IDENTITY_OPENID_CLAIM_NAME
+          value: "name"
+        - name: MINIO_IDENTITY_OPENID_CLAIM_PREFIX
+          value: ""
+        - name: MINIO_IDENTITY_TLS_ENABLE
+          value: "on"
+        - name: MINIO_IDENTITY_TLS_SKIP_VERIFY
+          value: "on"
+        volumeMounts:
+        - mountPath: /data
+          name: minio-volume
+        - mountPath: /root/.minio/certs/CAs/ca.crt
+          name: dex-cert
+          subPath: ca.crt
+      volumes:
+      - name: minio-volume
+        persistentVolumeClaim:
+          claimName: minio-volume
+      - name: dex-cert
+        configMap:
+          defaultMode: 420
+          name: dex-cert
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-volume
+  namespace: minio-store
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-svc
+  namespace: minio-store
+spec:
+  type: NodePort
+  selector:
+    app: minio
+  ports:
+    - name: 9090-tcp
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+    - name: 9000-tcp
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-console
+  namespace: minio-store
+  labels:
+    app: minio
+spec:
+  tls:
+  - secretName: minio
+    hosts:
+    - minio-console.34.125.51.84.nip.io
+  ingressClassName: nginx
+  rules:
+  - host: minio-console.34.125.51.84.nip.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: minio-svc
+            port:
+              number: 9090
+        path: /
+        pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-api
+  namespace: minio-store
+  labels:
+    app: minio
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: minio-api.34.125.51.84.nip.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: minio-svc
+            port:
+              number: 9000
+        path: /
+        pathType: Prefix
