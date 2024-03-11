@@ -1,5 +1,11 @@
 ## Minio Integration
 
+### Create local storage provitioners
+```
+wget -q https://raw.githubusercontent.com/cloudcafetech/rke2-airgap/main/local-path-storage.yaml
+kubectl create -f local-path-storage.yaml
+```
+
 ### Create Namespace, configmap from Dex CA certificate & tls certificate for ingress
 ```
 kubectl create ns minio-store
