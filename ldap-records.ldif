@@ -20,6 +20,14 @@ cn: debrup
 mail: debrupkar@cloudcafe.org
 userpassword: debrup123
 
+dn: cn=rajat,ou=people,dc=cloudcafe,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+sn: kar
+cn: rajat
+mail: rajatkar@cloudcafe.org
+userpassword: rajat123
+
 # Group definitions
 
 dn: ou=groups,dc=cloudcafe,dc=org
@@ -35,4 +43,4 @@ member: cn=prasen,ou=people,dc=cloudcafe,dc=org
 dn: cn=developers,ou=groups,dc=cloudcafe,dc=org
 objectClass: groupOfNames
 cn: developers
-member: cn=prasen,ou=people,dc=cloudcafe,dc=org
+member: cn=rajat,ou=people,dc=cloudcafe,dc=org
