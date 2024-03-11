@@ -1,0 +1,4 @@
+dn: cn=developers,ou=groups,dc=cloudcafe,dc=org
+changetype: modify
+add: member
+member: cn=titli,ou=people,dc=cloudcafe,dc=org
