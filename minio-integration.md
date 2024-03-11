@@ -22,9 +22,9 @@ kubectl create -f minio.yaml
 ### Create policy and should map with LDAP (cn) groups as variable "MINIO_IDENTITY_OPENID_CLAIM_NAME" value groups
 
 - login minio with credencial & create policy (as below) with LDAP (cn) groups.
-- you can run as mc command also ```mc admin policy create prasen allaccess.json```
+- you can run as mc command also ```mc admin policy create admins/developers allaccess.json```
 
-- For bucket creation
+- For bucket creation policy (Group name - *admins*)
 ```
 {
   "Version": "2012-10-17",
@@ -42,7 +42,7 @@ kubectl create -f minio.yaml
 }
 ```
 
-- For bucket view 
+- For bucket view policy (Group name - *developers*)
 ```
 {
     "Version": "2012-10-17",
