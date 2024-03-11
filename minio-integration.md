@@ -19,11 +19,12 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/
 kubectl create -f minio.yaml
 ```
 
-### Create policy and should map with LDAP (cn) name as variable "MINIO_IDENTITY_OPENID_CLAIM_NAME" value name
+### Create policy and should map with LDAP (cn) groups as variable "MINIO_IDENTITY_OPENID_CLAIM_NAME" value groups
 
-- login minio with credencial & create policy (as below) with LDAP (cn) name.
+- login minio with credencial & create policy (as below) with LDAP (cn) groups.
 - you can run as mc command also ```mc admin policy create prasen allaccess.json```
 
+- For bucket creation
 ```
 {
   "Version": "2012-10-17",
@@ -38,6 +39,26 @@ kubectl create -f minio.yaml
       ]
     }
   ]
+}
+```
+
+- For bucket view 
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::*"
+            ]
+        }
+    ]
 }
 ```
 
