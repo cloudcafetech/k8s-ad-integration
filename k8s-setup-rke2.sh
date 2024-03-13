@@ -123,6 +123,10 @@ sleep 10
 INGPOD=`kubectl get pod -n ingress-nginx -o wide | grep ingress-nginx-controller | grep $(kubectl get no | grep control-plane | awk '{print $1}') | awk '{print $1}'`
 kubectl wait pods/$INGPOD --for=condition=Ready --timeout=5m -n ingress-nginx
 
+# Setup reloader
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/reloader.yaml
+kubectl create -f reloader.yaml
+
 # Setup Monitoring
 wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
 wget -q https://github.com/cloudcafetech/kubesetup/raw/master/monitoring/dashboard/pod-monitoring.json
