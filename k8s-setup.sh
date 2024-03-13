@@ -147,6 +147,10 @@ kubectl wait pods/$INGPOD --for=condition=Ready --timeout=5m -n ingress-nginx
 # Setup Metric Server
 #kubectl apply -f https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/monitoring/metric-server.yaml
 
+# Setup reloader
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/reloader.yaml
+kubectl create -f reloader.yaml
+
 # Setup Monitoring
 wget -q https://raw.githubusercontent.com/cloudcafetech/AI-for-K8S/main/kubemon.yaml
 wget -q https://github.com/cloudcafetech/kubesetup/raw/master/monitoring/dashboard/pod-monitoring.json
