@@ -1,0 +1,137 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reloader
+  labels:
+    app: reloader
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: reloader
+  name: reloader
+  namespace: reloader
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: reloader
+  name: reloader-cr
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - configmaps
+    verbs:
+      - list
+      - get
+      - watch
+  - apiGroups:
+      - "apps"
+    resources:
+      - deployments
+      - daemonsets
+      - statefulsets
+    verbs:
+      - list
+      - get
+      - update
+      - patch
+  - apiGroups:
+      - "extensions"
+    resources:
+      - deployments
+      - daemonsets
+    verbs:
+      - list
+      - get
+      - update
+      - patch
+  - apiGroups:
+      - "batch"
+    resources:
+      - cronjobs
+    verbs:
+      - list
+      - get
+  - apiGroups:
+      - "batch"
+    resources:
+      - jobs
+    verbs:
+      - create
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: reloader
+  name: reloader-crb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: reloader-cr
+subjects:
+  - kind: ServiceAccount
+    name: reloader
+    namespace: reloader
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reloader
+  name: reloader
+  namespace: reloader
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: reloader
+  template:
+    metadata:
+      labels:
+        app: reloader
+    spec:
+      containers:
+      - image: "ghcr.io/stakater/reloader:v1.0.69"
+        imagePullPolicy: IfNotPresent
+        name: reloader
+        ports:
+        - name: http
+          containerPort: 9090
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: http
+          timeoutSeconds: 5
+          failureThreshold: 5
+          periodSeconds: 10
+          successThreshold: 1
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: http
+          timeoutSeconds: 5
+          failureThreshold: 5
+          periodSeconds: 10
+          successThreshold: 1
+          initialDelaySeconds: 10
+        securityContext:
+          {}
+      securityContext: 
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: reloader
