@@ -1,26 +1,65 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
   name: minio
   namespace: minio-store
+  labels:
+    name: minio-store
 spec:
+  clusterIP: None  
+  ports:
+  - port: 9000
+    name: minio
+  selector:
+    name: minio-store
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-svc
+  namespace: minio-store
+spec:
+  type: NodePort
+  selector:
+    name: minio-store
+  ports:
+  - name: minio-console
+    protocol: TCP
+    port: 9090
+    targetPort: 9090
+  - name: minio-api
+    protocol: TCP
+    port: 9000
+    targetPort: 9000
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio
+  namespace: minio-store
+  labels:
+    name: minio-store
+spec:
+  serviceName: minio
+  replicas: 3
   selector:
     matchLabels:
-      app: minio
-  replicas: 1
+      name: minio-store
   template:
     metadata:
       labels:
-        app: minio
+        name: minio-store
     spec:
       containers:
       - name: minio
-        image: quay.io/minio/minio:latest
-        command:
-        - /bin/bash
-        - -c
+        image: minio/minio:latest
         args:
-        - minio server /data --console-address :9090
+        - server   # who are our servers in cluster (below)
+        - http://minio-0.minio.minio-store.svc.cluster.local/data
+        - http://minio-1.minio.minio-store.svc.cluster.local/data
+        - http://minio-2.minio.minio-store.svc.cluster.local/data
+        - --console-address   # which port for console
+        - :9090
         env:
         - name: MINIO_ROOT_USER
           value: "minioadmin"
@@ -44,52 +83,32 @@ spec:
           value: "on"
         - name: MINIO_IDENTITY_TLS_SKIP_VERIFY
           value: "on"
+        ports:
+        - containerPort: 9000
+          hostPort: 9000
+        - containerPort: 9090
+          hostPort: 9090          
         volumeMounts:
         - mountPath: /data
-          name: minio-volume
+          name: data
         - mountPath: /root/.minio/certs/CAs/ca.crt
           name: dex-cert
           subPath: ca.crt
       volumes:
-      - name: minio-volume
-        persistentVolumeClaim:
-          claimName: minio-volume
       - name: dex-cert
         configMap:
           defaultMode: 420
           name: dex-cert
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: minio-volume
-  namespace: minio-store
-spec:
-  storageClassName: local-path
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: minio-svc
-  namespace: minio-store
-spec:
-  type: NodePort
-  selector:
-    app: minio
-  ports:
-    - name: 9090-tcp
-      protocol: TCP
-      port: 9090
-      targetPort: 9090
-    - name: 9000-tcp
-      protocol: TCP
-      port: 9000
-      targetPort: 9000
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 5Gi
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -97,7 +116,7 @@ metadata:
   name: minio-console
   namespace: minio-store
   labels:
-    app: minio
+    name: minio-store
 spec:
   tls:
   - secretName: minio
@@ -122,7 +141,7 @@ metadata:
   name: minio-api
   namespace: minio-store
   labels:
-    app: minio
+    name: minio-store
 spec:
   ingressClassName: nginx
   rules:
