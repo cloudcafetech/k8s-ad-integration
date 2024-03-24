@@ -64,12 +64,14 @@ table_manager:
 
 ruler:
   storage:
-    s3:
-      bucketnames: lokik8sminio
-  alertmanager_url: http://kubemon-alertmanager.monitoring.svc.cluster.local:9093
+    type: local
+    local:
+      directory: /etc/loki/rules
+  rule_path: /temp/loki/rules
   ring:
     kvstore:
       store: inmemory
+  alertmanager_url: http://kubemon-alertmanager.monitoring.svc.cluster.local:9093
   enable_api: true
   enable_alertmanager_v2: true
 
