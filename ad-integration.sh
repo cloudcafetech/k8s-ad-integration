@@ -127,6 +127,10 @@ sleep 15
 kubectl wait pods/minio-0 --for=condition=Ready --timeout=2m -n minio-store
 mc config host add k8sminio http://minio-api."$MASTERIP".nip.io minioadmin admin@2675 --insecure
 mc mb k8sminio/lokik8sminio --insecure
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/admin-access.json
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/read-access.json
+mc admin policy create k8sminio admins admin-access.json
+mc admin policy create k8sminio developers read-access.json
 
 kubectl get ing -A
 
