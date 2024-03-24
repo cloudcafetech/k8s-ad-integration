@@ -147,6 +147,10 @@ kubectl wait pods/$INGPOD --for=condition=Ready --timeout=5m -n ingress-nginx
 # Setup Metric Server
 #kubectl apply -f https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/monitoring/metric-server.yaml
 
+# Setup local storage
+wget -q https://raw.githubusercontent.com/cloudcafetech/rke2-airgap/main/local-path-storage.yaml
+kubectl create -f local-path-storage.yaml
+
 # Setup reloader
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/reloader.yaml
 kubectl create -f reloader.yaml
@@ -164,6 +168,8 @@ kubectl create configmap grafana-dashboards -n monitoring --from-file=pod-monito
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/kubelog.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/loki.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/promtail.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/minio.yaml
+sed -i "s/34.125.51.84/$PUBIPM/g" minio.yaml
 kubectl create ns logging
 kubectl create secret generic loki -n logging --from-file=loki.yaml
 #kubectl create -f kubelog.yaml -n logging
