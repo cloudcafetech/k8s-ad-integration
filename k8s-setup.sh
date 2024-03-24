@@ -2,7 +2,7 @@
 # Kubernetes host setup script using Kubeadm for Debian & Redhat distribution
 
 PUBIPM=`curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'`
-K8S_VER=1.26.0-00
+K8S_VER=1.29.0-00
 
 if [[ -n $(uname -a | grep -iE 'ubuntu|debian') ]]; then 
  OS=Ubuntu
