@@ -166,10 +166,10 @@ kubectl create configmap grafana-dashboards -n monitoring --from-file=pod-monito
 #kubectl create -f kubemon.yaml -n monitoring
 
 # Setup Logging
-wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/kubelog.yaml
-wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/loki.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/promtail.yaml
-wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/minio.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/kubelog.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/loki.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/minio.yaml
 sed -i "s/34.16.137.32/$PUBIPM/g" minio.yaml
 sed -i "s/1.2.3.4/$HIP/g" minio.yaml
 kubectl create ns logging
