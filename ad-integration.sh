@@ -123,6 +123,10 @@ kubectl create ns minio-store
 kubectl create cm dex-cert --from-file=ssl/ca.crt -n minio-store
 kubectl create secret tls minio --cert=ssl/tls.crt --key=ssl/tls.key -n minio-store
 kubectl create -f minio.yaml
+sleep 15
+kubectl wait pods/minio-0 --for=condition=Ready --timeout=2m -n minio-store
+mc config host add k8sminio http://minio-api."$MASTERIP".nip.io minioadmin admin@2675 --insecure
+mc mb k8sminio/lokik8sminio --insecure
 
 kubectl get ing -A
 
