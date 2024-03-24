@@ -6,7 +6,7 @@ K8S_VER=1.26.0-00
 
 if [[ -n $(uname -a | grep -iE 'ubuntu|debian') ]]; then 
  OS=Ubuntu
- HIP=`ip -o -4 addr list enp1s0 | awk '{print $4}' | cut -d/ -f1`
+ HIP=`ip -o -4 addr list ens4 | awk '{print $4}' | cut -d/ -f1`
 else
  HIP=`ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1`
 fi
@@ -145,7 +145,8 @@ INGPOD=`kubectl get pod -n ingress-nginx -o wide | grep ingress-nginx-controller
 kubectl wait pods/$INGPOD --for=condition=Ready --timeout=5m -n ingress-nginx
 
 # Setup Metric Server
-#kubectl apply -f https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/monitoring/metric-server.yaml
+wget -q https://raw.githubusercontent.com/cloudcafetech/rke2-airgap/main/metric-server.yaml
+kubectl create -f metric-server.yaml
 
 # Setup local storage
 wget -q https://raw.githubusercontent.com/cloudcafetech/rke2-airgap/main/local-path-storage.yaml
@@ -169,7 +170,8 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/loki.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/promtail.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/kubesetup/master/logging/minio.yaml
-sed -i "s/34.125.51.84/$PUBIPM/g" minio.yaml
+sed -i "s/34.16.137.32/$PUBIPM/g" minio.yaml
+sed -i "s/1.2.3.4/$HIP/g" minio.yaml
 kubectl create ns logging
 kubectl create secret generic loki -n logging --from-file=loki.yaml
 #kubectl create -f kubelog.yaml -n logging
