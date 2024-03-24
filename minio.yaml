@@ -146,7 +146,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: minio-api.34.16.137.32.nip.io
+  - host: minio-api.1.2.3.4.nip.io
     http:
       paths:
       - backend:
