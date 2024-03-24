@@ -183,10 +183,15 @@ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scrip
 chmod 700 get_helm.sh
 ./get_helm.sh
 
-### AD Integration
+# AD Integration
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ad-integration.sh
 chmod 755 ad-integration.sh
 #./ad-integration.sh
+
+# Install MinIO client
+wget -q https://dl.min.io/client/mc/release/linux-amd64/mc
+chmod +x mc
+mv mc /usr/local/bin/mc
 
 # Setup K8SGPT
 if [[ "$OS" == "Ubuntu" ]]; then
