@@ -4,14 +4,14 @@ metadata:
   name: minio
   namespace: minio-store
   labels:
-    name: minio-store
+    app: minio
 spec:
-  clusterIP: None  
+  clusterIP: None
   ports:
   - port: 9000
     name: minio
   selector:
-    name: minio-store
+    app: minio
 ---
 apiVersion: v1
 kind: Service
@@ -21,7 +21,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    name: minio-store
+    app: minio
   ports:
   - name: minio-console
     protocol: TCP
@@ -38,17 +38,18 @@ metadata:
   name: minio
   namespace: minio-store
   labels:
-    name: minio-store
+    app: minio
 spec:
   serviceName: minio
-  replicas: 3
+  replicas: 2
+  #replicas: 2  
   selector:
     matchLabels:
-      name: minio-store
+      app: minio
   template:
     metadata:
       labels:
-        name: minio-store
+        app: minio
     spec:
       containers:
       - name: minio
@@ -57,7 +58,7 @@ spec:
         - server   # who are our servers in cluster (below)
         - http://minio-0.minio.minio-store.svc.cluster.local/data
         - http://minio-1.minio.minio-store.svc.cluster.local/data
-        - http://minio-2.minio.minio-store.svc.cluster.local/data
+        #- http://minio-2.minio.minio-store.svc.cluster.local/data        
         - --console-address   # which port for console
         - :9090
         env:
@@ -66,13 +67,13 @@ spec:
         - name: MINIO_ROOT_PASSWORD
           value: "admin@2675"
         - name: MINIO_IDENTITY_OPENID_CONFIG_URL
-          value: "https://auth.34.125.51.84.nip.io/.well-known/openid-configuration"
+          value: "https://auth.34.16.137.32.nip.io/.well-known/openid-configuration"
         - name: MINIO_IDENTITY_OPENID_CLIENT_ID
           value: "oidc-auth-client"
         - name: MINIO_IDENTITY_OPENID_CLIENT_SECRET
           value: "secret"
         - name: MINIO_IDENTITY_OPENID_REDIRECT_URI
-          value: "https://minio-console.34.125.51.84.nip.io/oauth_callback"
+          value: "https://minio-console.34.16.137.32.nip.io/oauth_callback"
         - name: MINIO_IDENTITY_OPENID_SCOPES
           value: "groups,openid,email,profile"
         - name: MINIO_IDENTITY_OPENID_CLAIM_NAME
@@ -87,7 +88,7 @@ spec:
         - containerPort: 9000
           hostPort: 9000
         - containerPort: 9090
-          hostPort: 9090          
+          hostPort: 9090
         volumeMounts:
         - mountPath: /data
           name: data
@@ -116,15 +117,15 @@ metadata:
   name: minio-console
   namespace: minio-store
   labels:
-    name: minio-store
+    app: minio
 spec:
   tls:
   - secretName: minio
     hosts:
-    - minio-console.34.125.51.84.nip.io
+    - minio-console.34.16.137.32.nip.io
   ingressClassName: nginx
   rules:
-  - host: minio-console.34.125.51.84.nip.io
+  - host: minio-console.34.16.137.32.nip.io
     http:
       paths:
       - backend:
@@ -141,11 +142,11 @@ metadata:
   name: minio-api
   namespace: minio-store
   labels:
-    name: minio-store
+    app: minio
 spec:
   ingressClassName: nginx
   rules:
-  - host: minio-api.34.125.51.84.nip.io
+  - host: minio-api.34.16.137.32.nip.io
     http:
       paths:
       - backend:
