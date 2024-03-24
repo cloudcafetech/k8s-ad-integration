@@ -118,6 +118,12 @@ echo "Waiting for  Grafana POD UP & Running without Error .."
 GFPOD=$(kubectl get pod -n monitoring | grep grafana | awk '{print $1}')
 kubectl wait pods/$GFPOD --for=condition=Ready --timeout=2m -n monitoring
 
+# Minio integration
+kubectl create ns minio-store
+kubectl create cm dex-cert --from-file=ssl/ca.crt -n minio-store
+kubectl create secret tls minio --cert=ssl/tls.crt --key=ssl/tls.key -n minio-store
+kubectl create -f minio.yaml
+
 kubectl get ing -A
 
 # New users insert script in LDAP
