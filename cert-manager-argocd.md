@@ -67,7 +67,7 @@ kubectl create -f argocd-ing.yaml
 # Argo Password
 ```kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d```
 
-# minio
+- Minio
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -90,7 +90,7 @@ spec:
       - CreateNamespace=true
 ```
 
-# minio
+- Monitoring
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
