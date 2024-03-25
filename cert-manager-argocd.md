@@ -67,21 +67,46 @@ kubectl create -f argocd-ing.yaml
 # Argo Password
 ```kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d```
 
-# guestbook.yaml
+# minio
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: guestbook
+  name: minio
 spec:
   project: default
   destination:
-    namespace: guestbook
+    namespace: minio-store
     server: 'https://kubernetes.default.svc'
   source:
-    path: kustomize-guestbook
-    repoURL: 'https://github.com/argoproj/argocd-example-apps'
+    path: .
+    repoURL: 'https://github.com/cloudcafetech/rke2-airgap'
     targetRevision: HEAD
+    directory:
+      include: minio.yaml
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+```
+
+# minio
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+spec:
+  project: default
+  destination:
+    namespace: monitoring
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: monitoring
+    repoURL: 'https://github.com/cloudcafetech/kubesetup'
+    targetRevision: HEAD
+    directory:
+      include: kubemon.yaml
   syncPolicy:
     automated: {}
     syncOptions:
