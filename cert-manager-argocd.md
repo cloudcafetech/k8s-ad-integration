@@ -112,3 +112,21 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ```
+
+### Argo CLI
+
+```
+curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+chmod +x /usr/local/bin/argocd
+kubectl port-forward svc/argocd-server -n argocd 8080:443 &
+argopass=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+context=$(kubectl config get-contexts | grep -v NAME | awk '{print $2}')
+argocd login localhost:8080 --username admin --password $argopass
+argocd cluster add $context
+
+argopass=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+context=$(kubectl config get-contexts | grep -v NAME | awk '{print $2}')
+argocd login 172.30.1.2:32629 --username admin --password $argopass
+argocd context 
+argocd context --delete localhost:8080
+```
