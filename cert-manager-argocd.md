@@ -130,3 +130,6 @@ argocd login 172.30.1.2:32629 --username admin --password $argopass
 argocd context 
 argocd context --delete localhost:8080
 ```
+
+### Argo AD Integration
+REF: (https://www.opsmx.com/blog/how-to-setup-ldap-and-openldap-for-argocd/)
