@@ -75,8 +75,7 @@ rules:
   # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["kubernetes-dashboard-key-holder", "dex", "kubernetes-dashboard-csrf"]
-    #resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]    
+    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
     verbs: ["get", "update", "delete"]
     # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
   - apiGroups: [""]
@@ -165,8 +164,7 @@ spec:
           args:
             - --tls-cert-file=/tls.crt
             - --tls-key-file=/tls.key
-            - --namespace=auth-system
-            #- --namespace=kubernetes-dashboard            
+            - --namespace=kubernetes-dashboard
             #- --auto-generate-certificates            
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
@@ -193,8 +191,7 @@ spec:
       volumes:
         - name: kubernetes-dashboard-certs
           secret:
-            secretName: dex
-            #secretName: kubernetes-dashboard-certs            
+            secretName: kubernetes-dashboard-certs
         - name: tmp-volume
           emptyDir: {}
       serviceAccountName: kubernetes-dashboard
