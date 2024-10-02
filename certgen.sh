@@ -48,3 +48,5 @@ kubectl create secret tls k8s-dashboard-external-tls --cert=ssl/tls.crt --key=ss
 # Secret for Kubernetes Dashboard TLS Ingress
 kubectl delete secret kubernetes-dashboard-certs -n kubernetes-dashboard
 kubectl create secret generic kubernetes-dashboard-certs --from-file=tls.crt=$(pwd)/ssl/tls.crt --from-file=tls.key=$(pwd)/ssl/tls.key -n kubernetes-dashboard
+# Certificate in configmap for OCP console dashboard
+kubectl create cm dex-cert --from-file=ssl/ca.crt -n kube-system
