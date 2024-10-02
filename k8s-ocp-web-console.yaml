@@ -51,26 +51,28 @@ spec:
         # Create Dex CA (kubectl create cm dex-cert --from-file=ssl/ca.crt -n kube-system)
         image: quay.io/openshift/origin-console:4.11
         env:
-        - name: BRIDGE_USER_AUTH
-          value: oidc     
         - name: BRIDGE_K8S_MODE_OFF_CLUSTER_ENDPOINT
           value: https://kubernetes.default #master api
         - name: BRIDGE_K8S_MODE_OFF_CLUSTER_SKIP_VERIFY_TLS
           value: "true" # no tls enabled
-        - name: BRIDGE_DEX_API_HOST
-          value: "https://auth.172.30.2.2.nip.io:30443"
         - name: BRIDGE_BASE_ADDRESS
-          value: "https://4d205935-0c39-4d26-aa60-9103ea661744-10-244-8-34-30090.spch.r.killercoda.com"
+          value: "https://4d205935-0c39-4d26-aa60-9103ea661744-10-244-8-34-30090.spch.r.killercoda.com" # Console URL
         - name: BRIDGE_K8S_AUTH
           value: oidc
+        - name: BRIDGE_USER_AUTH
+          value: oidc
+        - name: BRIDGE_DEX_API_HOST
+          value: "https://auth.172.30.2.2.nip.io:30443"
         - name: BRIDGE_USER_AUTH_OIDC_ISSUER_URL
           value: "https://auth.172.30.2.2.nip.io:30443/"
         - name: BRIDGE_USER_AUTH_OIDC_CLIENT_ID
           value: oidc-auth-client
         - name: BRIDGE_USER_AUTH_OIDC_CLIENT_SECRET
           value: secret
+        - name: BRIDGE_USER_AUTH_OIDC_CA_FILE
+          value: "/tmp/ca.crt"
         volumeMounts:
-        - mountPath: /etc/pki/tls/certs/ca.crt
+        - mountPath: /tmp/ca.crt
           name: dex-cert
           subPath: ca.crt
       volumes:
