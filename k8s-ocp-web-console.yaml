@@ -46,8 +46,8 @@ spec:
       containers:
       - name: console-app
         # OCP K8s version map (https://gist.github.com/jeyaramashok/ebbd25f36338de4422fd584fea841c08)
-        # Image (https://quay.io/repository/openshift/origin-console?tab=tags) 
-        # Till image (origin-console:4.11) Virtualizattion menu is available      
+        # Image (https://quay.io/repository/openshift/origin-console?tab=tags)
+        # Till image (origin-console:4.11) Virtualizattion menu is available
         # Create Dex CA (kubectl create cm dex-cert --from-file=ssl/ca.crt -n kube-system)
         image: quay.io/openshift/origin-console:4.11
         env:
@@ -56,15 +56,15 @@ spec:
         - name: BRIDGE_K8S_MODE_OFF_CLUSTER_SKIP_VERIFY_TLS
           value: "true" # no tls enabled
         - name: BRIDGE_BASE_ADDRESS
-          value: "https://4d205935-0c39-4d26-aa60-9103ea661744-10-244-8-34-30090.spch.r.killercoda.com" # Console URL
+          value: "http://console.34.100.203.210.nip.io" # Console URL
         - name: BRIDGE_K8S_AUTH
           value: oidc
         - name: BRIDGE_USER_AUTH
           value: oidc
         - name: BRIDGE_DEX_API_HOST
-          value: "https://auth.172.30.2.2.nip.io:30443"
+          value: "https://auth.34.100.203.210.nip.io"
         - name: BRIDGE_USER_AUTH_OIDC_ISSUER_URL
-          value: "https://auth.172.30.2.2.nip.io:30443/"
+          value: "https://auth.34.100.203.210.nip.io/"
         - name: BRIDGE_USER_AUTH_OIDC_CLIENT_ID
           value: oidc-auth-client
         - name: BRIDGE_USER_AUTH_OIDC_CLIENT_SECRET
@@ -89,7 +89,7 @@ metadata:
 spec:
   selector:
     app: console
-  type: NodePort 
+  type: NodePort
   ports:
   - name: http
     port: 9000
@@ -103,10 +103,10 @@ metadata:
   name: console-ingress
   namespace: kube-system
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - host: console.127.0.0.1.nip.io
+  - host: console.34.100.203.210.nip.io
     http:
       paths:
       - path: /
