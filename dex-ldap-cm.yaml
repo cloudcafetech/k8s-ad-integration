@@ -32,7 +32,7 @@ data:
       - http://prom.172.30.2.2.nip.io:30443/oauth2/callback
       - http://alert.172.30.2.2.nip.io:30443/oauth2/callback
       - https://minio-console.172.30.2.2.nip.io/oauth_callback
-      - http://console.34.100.203.210.nip.io/auth/callback      
+      - http://console.172.30.2.2.nip.io/auth/callback      
       name: oidc-auth-client
       secret: secret
     connectors:
