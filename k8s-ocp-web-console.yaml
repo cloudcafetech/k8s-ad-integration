@@ -55,12 +55,18 @@ spec:
           value: https://kubernetes.default #master api
         - name: BRIDGE_K8S_MODE_OFF_CLUSTER_SKIP_VERIFY_TLS
           value: "true" # no tls enabled
-        - name: BRIDGE_BASE_ADDRESS
-          value: "http://console.34.100.203.210.nip.io" # Console URL
+        - name: BRIDGE_K8S_MODE_OFF_CLUSTER_THANOS
+          value: "http://prom.34.100.203.210.nip.io" # Promethues URL/SVC
+        - name: BRIDGE_K8S_MODE_OFF_CLUSTER_ALERTMANAGER
+          value: "http://alert.34.100.203.210.nip.io" # Alertmanager URL/SVC
+        - name: BRIDGE_PLUGINS
+          value: "monitoring-plugin=http://localhost:9001" # Plugins URL          
         - name: BRIDGE_K8S_AUTH
           value: oidc
         - name: BRIDGE_USER_AUTH
           value: oidc
+        - name: BRIDGE_BASE_ADDRESS
+          value: "http://console.34.100.203.210.nip.io" # Console URL
         - name: BRIDGE_DEX_API_HOST
           value: "https://auth.34.100.203.210.nip.io"
         - name: BRIDGE_USER_AUTH_OIDC_ISSUER_URL
