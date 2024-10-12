@@ -94,7 +94,7 @@ spec:
           name: dex-cert
           subPath: ca.crt
       - name: monitoring-plugin
-        image: docker.io/prasenforu/ocp-mon-plug:0.1.0          
+        image: docker.io/prasenforu/ocp-mon-plug:1.0.0          
       volumes:
       - name: dex-cert
         configMap:
