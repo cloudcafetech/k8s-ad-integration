@@ -51,26 +51,38 @@ spec:
         # Create Dex CA (kubectl create cm dex-cert --from-file=ssl/ca.crt -n kube-system)
         image: quay.io/openshift/origin-console:4.11
         env:
+        - name: BRIDGE_K8S_MODE
+          value: "off-cluster"
         - name: BRIDGE_K8S_MODE_OFF_CLUSTER_ENDPOINT
           value: https://kubernetes.default #master api
         - name: BRIDGE_K8S_MODE_OFF_CLUSTER_SKIP_VERIFY_TLS
           value: "true" # no tls enabled
-        - name: BRIDGE_K8S_MODE_OFF_CLUSTER_THANOS
-          value: "http://prom.34.100.203.210.nip.io" # Promethues URL/SVC
-        - name: BRIDGE_K8S_MODE_OFF_CLUSTER_ALERTMANAGER
-          value: "http://alert.34.100.203.210.nip.io" # Alertmanager URL/SVC
         - name: BRIDGE_PLUGINS
-          value: "monitoring-plugin=http://localhost:9001" # Plugins URL          
+          value: "monitoring-plugin=http://localhost:880" # Plugins URL (sidecar)
+        - name: BRIDGE_V
+          value: "5"
+        - name: BRIDGE_THANOS_PUBLIC_URL
+          value: "http://kubemon-prometheus.monitoring.svc.cluster.local:9090"
+        - name: BRIDGE_ALERTMANAGER_PUBLIC_URL
+          value: "http://kubemon-alertmanager.monitoring.svc.cluster.local:9093"
+        - name: BRIDGE_GRAFANA_PUBLIC_URL
+          value: "http://grafana.monitoring.svc.cluster.local:3000"
+        - name: BRIDGE_PROMETHEUS_PUBLIC_URL
+          value: "http://kubemon-prometheus.monitoring.svc.cluster.local:9090"
+        - name: BRIDGE_K8S_MODE_OFF_CLUSTER_THANOS
+          value: "http://kubemon-prometheus.monitoring.svc.cluster.local:9090" 
+        - name: BRIDGE_K8S_MODE_OFF_CLUSTER_ALERTMANAGER
+          value: "http://kubemon-alertmanager.monitoring.svc.cluster.local:9093" 
         - name: BRIDGE_K8S_AUTH
           value: oidc
         - name: BRIDGE_USER_AUTH
           value: oidc
         - name: BRIDGE_BASE_ADDRESS
-          value: "http://console.34.100.203.210.nip.io" # Console URL
+          value: "http://console.apps.k8s.cloudcafe.tech" # Console URL
         - name: BRIDGE_DEX_API_HOST
-          value: "https://auth.34.100.203.210.nip.io"
+          value: "https://auth.apps.k8s.cloudcafe.tech"
         - name: BRIDGE_USER_AUTH_OIDC_ISSUER_URL
-          value: "https://auth.34.100.203.210.nip.io/"
+          value: "https://auth.apps.k8s.cloudcafe.tech/"
         - name: BRIDGE_USER_AUTH_OIDC_CLIENT_ID
           value: oidc-auth-client
         - name: BRIDGE_USER_AUTH_OIDC_CLIENT_SECRET
@@ -86,6 +98,8 @@ spec:
         configMap:
           defaultMode: 420
           name: dex-cert
+      - name: monitoring-plugin
+        image: docker.io/prasenforu/ocp-mon-plug:0.1.0          
 ---
 kind: Service
 apiVersion: v1
