@@ -1,41 +1,4 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: node-01-registry-pv
-spec:
-  capacity:
-    storage: 60Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
-  local:
-    path: /opt/registry/data
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - node-01
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: registry-pvc
-  namespace: registry
-spec:
-  accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
-  resources:
-    requests:
-      storage: 60Gi
-  storageClassName: local-storage
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: registry
@@ -84,6 +47,7 @@ spec:
       labels:
         app: registry 
     spec:
+      nodeName: worker1
       containers:
       - name: registry
         image: registry
@@ -116,8 +80,9 @@ spec:
           mountPath: /var/lib/registry
       volumes:
       - name: containers
-        persistentVolumeClaim:
-          claimName: registry-pvc
+        hostPath:
+          path: /opt/registry/data  # local folder on the host.  
+          type: DirectoryOrCreate 
       - name: auth
         configMap:
           name: registry-auth
