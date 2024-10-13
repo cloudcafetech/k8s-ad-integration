@@ -58,7 +58,7 @@ spec:
         - name: BRIDGE_K8S_MODE_OFF_CLUSTER_SKIP_VERIFY_TLS
           value: "true" # no tls enabled
         - name: BRIDGE_PLUGINS
-          value: "monitoring-plugin=http://localhost:880" # Plugins URL (sidecar)
+          value: "monitoring-plugin=http://localhost:80" # Plugins URL (sidecar)
         - name: BRIDGE_V
           value: "5"
         - name: BRIDGE_THANOS_PUBLIC_URL
@@ -126,7 +126,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: console.34.100.203.210.nip.io
+  - host: console.apps.k8s.cloudcafe.tech
     http:
       paths:
       - path: /
