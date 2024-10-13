@@ -47,9 +47,10 @@ spec:
       - name: console-app
         # OCP K8s version map (https://gist.github.com/jeyaramashok/ebbd25f36338de4422fd584fea841c08)
         # Image (https://quay.io/repository/openshift/origin-console?tab=tags)
-        # Till image (origin-console:4.11) Virtualizattion menu is available
+        # Image version (4.10) monitoring/observe menu is  visible
+        # Image version (4.11) Virtualizattion menu is visible but monitoring/observe not visible
         # Create Dex CA (kubectl create cm dex-cert --from-file=ssl/ca.crt -n kube-system)
-        image: quay.io/openshift/origin-console:4.11
+        image: quay.io/openshift/origin-console:4.10
         env:
         - name: BRIDGE_K8S_MODE
           value: "off-cluster"
