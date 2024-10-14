@@ -115,10 +115,20 @@ kind: Ingress
 metadata:
   namespace: registry
   name: registry
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    kubernetes.io/tls-acme: 'true'
+    cert-manager.io/cluster-issuer: "selfsigned-issuer"
   labels:
     app: registry
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - registry.apps.k8s.cloudcafe.tech
+    secretName: reg-cert
   rules:
   - host: registry.apps.k8s.cloudcafe.tech
     http:
