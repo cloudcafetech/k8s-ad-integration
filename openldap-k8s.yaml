@@ -1,0 +1,144 @@
+# kubectl create ns ldap
+# wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ldap-records.ldif
+# ldapadd -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -f ldap-records.ldif
+# ldapsearch -x -H ldap://$HIP -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,dc=org" -w "StrongAdminPassw0rd"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openldap
+  namespace: ldap
+data:
+  LDAP_DOMAIN: cloudcafe.org
+  LDAP_ORGANISATION: cloudcafe
+  LDAP_TLS_VERIFY_CLIENT: try
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: openldap
+  namespace: ldap
+type: Opaque
+data:
+  LDAP_ADMIN_PASSWORD: U3Ryb25nQWRtaW5QYXNzdzByZA==
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openldap-pvc-data
+  namespace: ldap
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openldap-pvc-etc
+  namespace: ldap
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: openldap
+  name: openldap
+  namespace: ldap
+spec:
+  type: "NodePort"
+  ports:
+  - name: "port-689"
+    port: 689
+    protocol: TCP
+    targetPort: 689
+  - name: "port-389"
+    port: 389
+    protocol: TCP
+    targetPort: 389
+    nodePort: 30389
+  selector:
+    app: openldap
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: openldap
+  name: openldap
+  namespace: ldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openldap
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      containers:
+      - image: osixia/openldap:latest
+        name: openldap
+        envFrom:
+        - configMapRef:
+            name: openldap
+        - secretRef:
+            name: openldap
+        ports:
+        - name: "port-389"
+          containerPort: 389
+        - name: "port-689"
+          containerPort: 689
+        volumeMounts:
+        - name: openldap-pvc-data
+          mountPath: "/var/lib/ldap"
+        - name: openldap-pvc-etc
+          mountPath: "/etc/ldap/slapd.d"
+      volumes:
+      - name: openldap-pvc-data
+        persistentVolumeClaim:
+          claimName: openldap-pvc-data
+      - name: openldap-pvc-etc
+        persistentVolumeClaim:
+          claimName: openldap-pvc-etc
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: ldap
+  name: openldap
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    kubernetes.io/tls-acme: 'true'
+    cert-manager.io/cluster-issuer: "selfsigned-issuer"
+  labels:
+    app: openldap
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - ldap.apps.k8s.cloudcafe.tech
+    secretName: ldap-cert
+  rules:
+  - host: ldap.apps.k8s.cloudcafe.tech
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: openldap
+            port:
+              name: port-389
