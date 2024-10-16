@@ -5,7 +5,7 @@ metadata:
   namespace: auth-system
 data:
   config.yaml: |
-    issuer: https://auth.172.30.2.2.nip.io:30443/
+    issuer: https://auth.apps.k8s.cloudcafe.tech/
     storage:
       type: kubernetes
       config:
@@ -27,12 +27,12 @@ data:
     staticClients:
     - id: oidc-auth-client
       redirectURIs:
-      - https://kubectl.172.30.2.2.nip.io:30443/callback
-      - http://dashboard.172.30.2.2.nip.io:30443/oauth2/callback
-      - http://prom.172.30.2.2.nip.io:30443/oauth2/callback
-      - http://alert.172.30.2.2.nip.io:30443/oauth2/callback
-      - https://minio-console.172.30.2.2.nip.io/oauth_callback
-      - http://console.172.30.2.2.nip.io/auth/callback      
+      - https://kubectl.apps.k8s.cloudcafe.tech/callback
+      - https://console.apps.k8s.cloudcafe.tech/auth/callback      
+      - https://minio-console.apps.k8s.cloudcafe.tech/oauth_callback
+      - http://dashboard.apps.k8s.cloudcafe.tech/oauth2/callback
+      - http://prom.apps.k8s.cloudcafe.tech/oauth2/callback
+      - http://alert.apps.k8s.cloudcafe.tech/oauth2/callback      
       name: oidc-auth-client
       secret: secret
     connectors:
@@ -40,7 +40,7 @@ data:
       id: ldap
       name: LDAP
       config:
-        host: 172.30.1.2:389
+        host: 192.168.1.8:389
         insecureNoSSL: true
         insecureSkipVerify: true
         startTLS: false
