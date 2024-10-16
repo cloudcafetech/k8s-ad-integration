@@ -3,6 +3,10 @@
 ### Download and deploy
 
 ```
+ORGS=cloudcafe
+ED=tech
+DOMAIN=172.27.2.220.nip.io
+
 mkdir auth
 cd auth
 
@@ -12,11 +16,7 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/refs/
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/refs/heads/main/k8s-ocp-web-console.yaml
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/refs/heads/main/new-add-user.ldif
 
-ORGS=cloudcafe
-ED=tech
-DOMAIN=172.27.2.220.nip.io
 sed -i "s/apps.k8s.cloudcafe.tech/$DOMAIN/g" *.yaml
-
 sed -i "s/ghcr.io/registry.$DOMAIN/g" *.yaml
 sed -i "s/gcr.io/registry.$DOMAIN/g" *.yaml
 sed -i "s/docker.io/registry.$DOMAIN/g" *.yaml
