@@ -31,7 +31,7 @@ kubectl create ns auth-system
 kubectl create -f *.yaml -n auth-system
 ```
 
-### Load used in LDAP
+### Load users in LDAP
 
 ```
 ldapadd -x -H ldap://<worker node ip>:30389 -D "cn=admin,dc=$ORGS,dc=$ED" -w StrongAdminPassw0rd -f ldap-records.ldif
