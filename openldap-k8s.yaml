@@ -87,7 +87,7 @@ spec:
         app: openldap
     spec:
       containers:
-      - image: osixia/openldap:latest
+      - image: docker.io/osixia/openldap:latest
         name: openldap
         envFrom:
         - configMapRef:
