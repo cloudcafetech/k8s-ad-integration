@@ -45,8 +45,7 @@ spec:
     spec:
       containers:
       - name: console-app
-        # OCP K8s version map (https://gist.github.com/jeyaramashok/ebbd25f36338de4422fd584fea841c0
-8)
+        # OCP K8s version map (https://gist.github.com/jeyaramashok/ebbd25f36338de4422fd584fea841c08)
         # Image (https://quay.io/repository/openshift/origin-console?tab=tags)
         # Till image (origin-console:4.11) Virtualizattion menu is available
         # Create Dex CA (kubectl create cm dex-cert --from-file=ssl/ca.crt -n kube-system)
