@@ -6,7 +6,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: openldap
-  namespace: ldap
+  namespace: auth-system
 data:
   LDAP_DOMAIN: cloudcafe.org
   LDAP_ORGANISATION: cloudcafe
@@ -16,7 +16,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: openldap
-  namespace: ldap
+  namespace: auth-system
 type: Opaque
 data:
   LDAP_ADMIN_PASSWORD: U3Ryb25nQWRtaW5QYXNzdzByZA==
@@ -25,7 +25,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: openldap-pvc-data
-  namespace: ldap
+  namespace: auth-system
 spec:
   accessModes:
     - ReadWriteOnce
@@ -38,7 +38,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: openldap-pvc-etc
-  namespace: ldap
+  namespace: auth-system
 spec:
   accessModes:
     - ReadWriteOnce
@@ -53,7 +53,7 @@ metadata:
   labels:
     app: openldap
   name: openldap
-  namespace: ldap
+  namespace: auth-system
 spec:
   type: "NodePort"
   ports:
@@ -75,7 +75,7 @@ metadata:
   labels:
     app: openldap
   name: openldap
-  namespace: ldap
+  namespace: auth-system
 spec:
   replicas: 1
   selector:
@@ -111,34 +111,3 @@ spec:
       - name: openldap-pvc-etc
         persistentVolumeClaim:
           claimName: openldap-pvc-etc
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  namespace: ldap
-  name: openldap
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-    kubernetes.io/tls-acme: 'true'
-    cert-manager.io/cluster-issuer: "selfsigned-issuer"
-  labels:
-    app: openldap
-spec:
-  ingressClassName: nginx
-  tls:
-  - hosts:
-    - ldap.apps.k8s.cloudcafe.tech
-    secretName: ldap-cert
-  rules:
-  - host: ldap.apps.k8s.cloudcafe.tech
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: openldap
-            port:
-              name: port-389
