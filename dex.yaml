@@ -136,9 +136,9 @@ spec:
   tls:
   - secretName: dex
     hosts:
-    - auth.172.30.2.2.nip.io
+    - auth.apps.k8s.cloudcafe.tech
   rules:
-  - host: auth.172.30.2.2.nip.io
+  - host: auth.apps.k8s.cloudcafe.tech
     http:
       paths:
         - path: /
