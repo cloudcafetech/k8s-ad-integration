@@ -1,4 +1,4 @@
-# kubectl create ns ldap
+# kubectl create ns auth-system
 # wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/main/ldap-records.ldif
 # ldapadd -x -H ldap://$HIP:30389 -D "cn=admin,dc=cloudcafe,dc=org" -w StrongAdminPassw0rd -f ldap-records.ldif
 # ldapsearch -x -H ldap://$HIP:30389 -D "cn=admin,dc=cloudcafe,dc=org" -b "dc=cloudcafe,dc=org" -w "StrongAdminPassw0rd"
