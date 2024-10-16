@@ -6,7 +6,7 @@ metadata:
 data:
   gangway.yaml: |
     clusterName: "Kubernetes"
-    apiServerURL: "https://10.182.0.13:6443"
+    apiServerURL: "https://kubernetes.default"
     authorizeURL: "https://auth.172.30.1.2.nip.io/auth"  
     tokenURL: "https://auth.172.30.1.2.nip.io/token"
     clientID: "oidc-auth-client"
@@ -17,6 +17,15 @@ data:
     emailClaim: "email"
     # For insecure (selfsign), 509 certificate error  
     trustedCAPath: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gangway-key
+  namespace: auth-system
+type: Opaque
+data:
+  sesssionkey: VUtvMC9hMk1zaWlkcTU1SmFsNXk3WmJqUExiVFFvalpDZFpYa2wyRHRmZz0=
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -102,6 +111,11 @@ metadata:
   namespace: auth-system
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    #cert-manager.io/cluster-issuer: "private-ca"
+    cert-manager.io/cluster-issuer: "selfsigned-issuer"
 spec:
   ingressClassName: nginx
   tls:
