@@ -17,10 +17,10 @@ wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/refs/
 wget -q https://raw.githubusercontent.com/cloudcafetech/k8s-ad-integration/refs/heads/main/new-add-user.ldif
 
 sed -i "s/apps.k8s.cloudcafe.tech/$DOMAIN/g" *.yaml
-sed -i "s/ghcr.io/registry.$DOMAIN/g" *.yaml
-sed -i "s/gcr.io/registry.$DOMAIN/g" *.yaml
-sed -i "s/docker.io/registry.$DOMAIN/g" *.yaml
-sed -i "s/quay.io/registry.$DOMAIN/g" *.yaml
+#sed -i "s/ghcr.io/registry.$DOMAIN/g" *.yaml
+#sed -i "s/gcr.io/registry.$DOMAIN/g" *.yaml
+#sed -i "s/docker.io/registry.$DOMAIN/g" *.yaml
+#sed -i "s/quay.io/registry.$DOMAIN/g" *.yaml
 
 sed -i "s/cloudcafe.org/$ORGS.$ED/g" openldap-k8s.yaml
 sed -i "s/cloudcafe/$ORGS/g" openldap-k8s.yaml
