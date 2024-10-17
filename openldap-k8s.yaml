@@ -84,7 +84,7 @@ spec:
   selector:
     app: ldap-pass
   type: NodePort
----  
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -180,3 +180,33 @@ spec:
           value: "30"
         - name: SMTP_USER
           value: noreply@example.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    #cert-manager.io/cluster-issuer: private-ca
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+  name: ldap-pass
+  namespace: auth-system
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - passchange.apps.k8s.cloudcafe.tech
+    secretName: ldap-pass-cert
+  rules:
+  - host: passchange.apps.k8s.cloudcafe.tech
+    http:
+      paths:
+      - backend:
+          service:
+            name: ldap-pass
+            port:
+              number: 8765
+        path: /
+        pathType: Prefix
+        
