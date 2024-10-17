@@ -146,7 +146,7 @@ spec:
         app: ldap-pass
     spec:
       containers:
-      - image: tiredofit/self-service-password:latest
+      - image: docker.io/tiredofit/self-service-password:latest
         name: ldap-pass
         envFrom:
         - secretRef:
