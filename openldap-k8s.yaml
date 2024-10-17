@@ -20,6 +20,7 @@ metadata:
 type: Opaque
 data:
   LDAP_ADMIN_PASSWORD: U3Ryb25nQWRtaW5QYXNzdzByZA==
+  LDAP_BINDPASS: U3Ryb25nQWRtaW5QYXNzdzByZA==
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -69,6 +70,21 @@ spec:
   selector:
     app: openldap
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ldap-pass
+  namespace: auth-system
+spec:
+  ports:
+  - name: ldap-pass-http
+    port: 8765
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ldap-pass
+  type: NodePort
+---  
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -111,3 +127,56 @@ spec:
       - name: openldap-pvc-etc
         persistentVolumeClaim:
           claimName: openldap-pvc-etc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ldap-pass
+  name: ldap-pass
+  namespace: auth-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ldap-pass
+  template:
+    metadata:
+      labels:
+        app: ldap-pass
+    spec:
+      containers:
+      - image: tiredofit/self-service-password:latest
+        name: ldap-pass
+        envFrom:
+        - secretRef:
+            name: openldap
+        env:
+        - name: LDAP_SERVER
+          value: ldap://openldap.auth-system:389
+        - name: LDAP_BASE_SEARCH
+          value: ou=people,dc=cloudcafe,dc=org
+        - name: LDAP_BINDDN
+          value: cn=admin,dc=cloudcafe,dc=org
+        - name: LDAP_FULLNAME_ATTRIBUTE
+          value: cn
+        - name: LDAP_LOGIN_ATTRIBUTE
+          value: mail
+        - name: LDAP_MAIL_ATTRIBUTE
+          value: mail
+        - name: MAIL_FROM
+          value: noreply@example.com
+        - name: MAIL_FROM_NAME
+          value: Self Service Password
+        - name: SMTP_HOST
+          value: smtp.example.com
+        - name: SMTP_PASS
+          value: smtppassword
+        - name: SMTP_PORT
+          value: "587"
+        - name: SMTP_SECURE_TYPE
+          value: tls
+        - name: SMTP_TIMEOUT
+          value: "30"
+        - name: SMTP_USER
+          value: noreply@example.com
