@@ -18,9 +18,10 @@ data:
     </head>
 
     <body>
+    <center>
         <nav class="light-blue blue">
             <div class="nav-wrapper container">
-                <a href="#" class="brand-logo">gangway</a>
+                <a href="#" class="brand-logo">K8S</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="/logout">Logout</a></li>
                 </ul>
@@ -52,6 +53,8 @@ data:
                     <div class="right-align">
                         <a class="waves-effect waves-light btn-small btn-copy blue">Copy to clipboard</a>
                     </div>
+    </center>                    
+    </body>
 
                     <pre id="config-section-bash"><code class="language-bash">echo "{{ .ClusterCA }}" \ > "ca-{{ .ClusterName }}.pem"
     kubectl config set-cluster "{{ .ClusterName }}" --server={{ .APIServerURL }} --certificate-authority="ca-{{ .ClusterName }}.pem" --embed-certs
@@ -65,6 +68,8 @@ data:
     kubectl config set-context "{{ .ClusterName }}" --cluster="{{ .ClusterName }}" --user="{{ .KubeCfgUser }}"
     kubectl config use-context "{{ .ClusterName }}"
     rm "ca-{{ .ClusterName }}.pem"</code></pre>
+
+
                     <pre id="config-section-ps"><code class="language-powershell">$ClusterCA = "{{ .ClusterCA }}"
     Set-Content -Path "ca-{{ .ClusterName }}.pem" -Value $ClusterCA
     kubectl config set-cluster "{{ .ClusterName }}" --server={{ .APIServerURL }} --certificate-authority="ca-{{ .ClusterName }}.pem" --embed-certs
@@ -82,7 +87,8 @@ data:
             </div>
         </div>
 
-
+    <body>
+    <center>
         <div class="container">
             <h5>Install kubectl</h5>
             <p>The Kubernetes command-line utility, kubectl, may be installed like so:</p>
@@ -98,6 +104,8 @@ data:
                     <div class="right-align">
                         <a class="waves-effect waves-light btn-small btn-copy blue">Copy to clipboard</a>
                     </div>
+    </center>                    
+    </body>
 
                     <pre id="install-section-bash"><code class="language-bash">curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/$(uname | awk '{print tolower($0)}')/amd64/kubectl
     chmod +x ./kubectl
@@ -109,7 +117,7 @@ data:
             </div>
         </div>
 
-
+    <body>
         <script type="text/javascript" src="assets/materialize.min.js"></script>
         <script type="text/javascript" src="assets/prism.js"></script>
         <script type="text/javascript" src="assets/prism-bash.js"></script>
@@ -131,6 +139,7 @@ data:
     </head>
 
     <body>
+    <center>
         <nav class="light-blue blue">
             <div class="nav-wrapper container">
                 <a href="#" class="brand-logo">gangway</a>
@@ -147,6 +156,7 @@ data:
         </div>
 
         <script type="text/javascript" src="assets/materialize.min.js"></script>
+    </center>        
     </body>
     </html>
 ---  
