@@ -1,11 +1,154 @@
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
-  name: gangway-key
+  name: custom-template
   namespace: auth-system
-type: Opaque
 data:
-  sesssionkey: VUtvMC9hMk1zaWlkcTU1SmFsNXk3WmJqUExiVFFvalpDZFpYa2wyRHRmZz0=
+  commandline.tmpl: 
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Kubeconfig</title>
+        <base href="{{ .HTTPPath }}/">
+        <link type="text/css" rel="stylesheet" href="assets/materialize.min.css"  media="screen"/>
+        <link type="text/css" rel="stylesheet" href="assets/prism.css" media="screen"/>
+        <link type="text/css" rel="stylesheet" href="assets/gangway.css" media="screen"/>
+    </head>
+
+    <body>
+        <nav class="light-blue blue">
+            <div class="nav-wrapper container">
+                <a href="#" class="brand-logo">gangway</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+
+        <div class="container">
+            <h4 class="center">Welcome {{ .Username }}.</h4>
+            <p class="flow-text">In order to get CLI access to the {{ .ClusterName }} Kubernetes cluster, you will need to configure (OIDC) authentication for your client.</p>
+            <p>
+                <a href="{{ .HTTPPath }}/kubeconf" class="waves-effect waves-light btn-large blue">Download Kubeconfig</a>
+            </p>
+        </div>
+
+
+        <div class="container">
+            <h5>Config cluster context</h5>
+            <p>Once kubectl is installed (see below), you may execute the following:</p>
+            <div class="card">
+                <div class="card-tabs">
+                    <ul class="tabs">
+                        <li class="tab"><a class="active" href="#config-section-bash">Bash</a></li>
+                        <li class="tab"><a href="#config-section-ps">PowerShell</a></li>
+                    </ul>
+                </div>
+
+                <div class="card-content grey lighten-4">
+                    <div class="right-align">
+                        <a class="waves-effect waves-light btn-small btn-copy blue">Copy to clipboard</a>
+                    </div>
+
+                    <pre id="config-section-bash"><code class="language-bash">echo "{{ .ClusterCA }}" \ > "ca-{{ .ClusterName }}.pem"
+    kubectl config set-cluster "{{ .ClusterName }}" --server={{ .APIServerURL }} --certificate-authority="ca-{{ .ClusterName }}.pem" --embed-certs
+    kubectl config set-credentials "{{ .KubeCfgUser }}"  \
+        --auth-provider=oidc  \
+        --auth-provider-arg='idp-issuer-url={{ .IssuerURL }}'  \
+        --auth-provider-arg='client-id={{ .ClientID }}'  \
+        --auth-provider-arg='client-secret={{ .ClientSecret }}' \
+        --auth-provider-arg='refresh-token={{ .RefreshToken }}' \
+        --auth-provider-arg='id-token={{ .IDToken }}'
+    kubectl config set-context "{{ .ClusterName }}" --cluster="{{ .ClusterName }}" --user="{{ .KubeCfgUser }}"
+    kubectl config use-context "{{ .ClusterName }}"
+    rm "ca-{{ .ClusterName }}.pem"</code></pre>
+                    <pre id="config-section-ps"><code class="language-powershell">$ClusterCA = "{{ .ClusterCA }}"
+    Set-Content -Path "ca-{{ .ClusterName }}.pem" -Value $ClusterCA
+    kubectl config set-cluster "{{ .ClusterName }}" --server={{ .APIServerURL }} --certificate-authority="ca-{{ .ClusterName }}.pem" --embed-certs
+    kubectl config set-credentials "{{ .KubeCfgUser }}"  `
+        --auth-provider=oidc  `
+        --auth-provider-arg='idp-issuer-url={{ .IssuerURL }}'  `
+        --auth-provider-arg='client-id={{ .ClientID }}'  `
+        --auth-provider-arg='client-secret={{ .ClientSecret }}' `
+        --auth-provider-arg='refresh-token={{ .RefreshToken }}' `
+        --auth-provider-arg='id-token={{ .IDToken }}'
+    kubectl config set-context "{{ .ClusterName }}" --cluster="{{ .ClusterName }}" --user="{{ .KubeCfgUser }}"
+    kubectl config use-context "{{ .ClusterName }}"
+    Remove-Item "ca-{{ .ClusterName }}.pem"</code></pre>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h5>Install kubectl</h5>
+            <p>The Kubernetes command-line utility, kubectl, may be installed like so:</p>
+            <div class="card">
+                <div class="card-tabs">
+                    <ul class="tabs">
+                        <li class="tab"><a class="active" href="#install-section-bash">Bash</a></li>
+                        <li class="tab"><a href="#install-section-ps">PowerShell</a></li>
+                    </ul>
+                </div>
+
+                <div class="card-content grey lighten-4">
+                    <div class="right-align">
+                        <a class="waves-effect waves-light btn-small btn-copy blue">Copy to clipboard</a>
+                    </div>
+
+                    <pre id="install-section-bash"><code class="language-bash">curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/$(uname | awk '{print tolower($0)}')/amd64/kubectl
+    chmod +x ./kubectl
+    sudo mv ./kubectl /usr/local/bin/kubectl</code></pre>
+                    <pre id="install-section-ps"><code class="language-powershell">Install-Script -Name install-kubectl -Scope CurrentUser -Force
+    New-Item -Path 'C:\Program Files\Kubectl' -ItemType Directory
+    install-kubectl.ps1 -DownloadLocation 'C:\Program Files\Kubectl'</code></pre>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript" src="assets/materialize.min.js"></script>
+        <script type="text/javascript" src="assets/prism.js"></script>
+        <script type="text/javascript" src="assets/prism-bash.js"></script>
+        <script type="text/javascript" src="assets/prism-powershell.js"></script>
+        <script type="text/javascript" src="assets/gangway.js"></script>
+    </body>
+    </html>
+
+  home.tmpl:
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Kubeconfig</title>
+        <base href="{{ .HTTPPath }}/">
+        <link type="text/css" rel="stylesheet" href="assets/materialize.min.css"  media="screen"/>
+        <link type="text/css" rel="stylesheet" href="assets/gangway.css" media="screen"/>
+    </head>
+
+    <body>
+        <nav class="light-blue blue">
+            <div class="nav-wrapper container">
+                <a href="#" class="brand-logo">gangway</a>
+            </div>
+        </nav>
+
+
+        <div class="container">
+            <h1 class="center header">Kubernetes Authentication</h1>
+            <p class="flow-text center">Kubernetes cluster with OIDC. Sign in to get started.</p>
+            <p class="center">
+                    <a href="{{ .HTTPPath }}/login" class="waves-effect waves-light btn-large blue">Sign in</a>
+            </p>
+        </div>
+
+        <script type="text/javascript" src="assets/materialize.min.js"></script>
+    </body>
+    </html>
 ---  
 apiVersion: v1
 kind: ConfigMap
@@ -25,8 +168,18 @@ data:
     usernameClaim: "email"
     emailClaim: "email"
     # For insecure (selfsign), 509 certificate error
-    trustedCAPath: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+    #trustedCAPath: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+    trustedCAPath: "/tmp/certs/tls.crt"   
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gangway-key
+  namespace: auth-system
+type: Opaque
+data:
+  sesssionkey: VUtvMC9hMk1zaWlkcTU1SmFsNXk3WmJqUExiVFFvalpDZFpYa2wyRHRmZz0=
+---  
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -50,6 +203,8 @@ spec:
         - -config
         - /gangway/gangway.yaml
         env:
+        #- name: GANGWAY_CUSTOM_HTTP_TEMPLATES_DIR
+          #value: "/tmp/templates"        
         - name: GANGWAY_SESSION_SECURITY_KEY
           valueFrom:
             secretKeyRef:
@@ -73,8 +228,12 @@ spec:
         volumeMounts:
         - mountPath: /etc/ssl/certs
           name: certs
+        - mountPath: /tmp/certs
+          name: dexcerts        
         - mountPath: /gangway/
           name: gangway
+        - mountPath: /tmp/templates
+          name: custom-template       
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
@@ -82,10 +241,18 @@ spec:
           defaultMode: 420
           name: gangway
         name: gangway
+      - configMap:
+          defaultMode: 420
+          name: custom-template
+        name: custom-template        
       - name: certs
         secret:
           defaultMode: 420
           secretName: gangway
+      - name: dexcerts
+        secret:
+          defaultMode: 420
+          secretName: dex
 ---
 apiVersion: v1
 kind: Service
