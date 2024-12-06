@@ -2,7 +2,7 @@
 
 Ready image available (prasenforu/ocp-monplug:v1)
 
-- Download & Build
+- Download & Build [REF](https://github.com/openshift/console/issues/14093#issuecomment-2518248425)
 
 ```
 wget https://github.com/openshift/monitoring-plugin/archive/refs/heads/release-4.16.zip
