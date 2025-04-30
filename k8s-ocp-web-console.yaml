@@ -49,7 +49,7 @@ spec:
         # Image (https://quay.io/repository/openshift/origin-console?tab=tags)
         # Till image (origin-console:4.11) Virtualizattion menu is available
         # Create Dex CA (kubectl create cm dex-cert --from-file=ssl/ca.crt -n kube-system)
-        image: quay.io/openshift/origin-console:4.10
+        image: quay.io/openshift/origin-console:4.11
         env:
         - name: BRIDGE_K8S_MODE
           value: "off-cluster"
@@ -86,7 +86,7 @@ spec:
           name: dex-cert
           subPath: tls.crt
       #- name: monitoring-plugin
-        #image: docker.io/prasenforu/ocp-mon-plug:1.0.0
+        #image: docker.io/prasenforu/ocp-mon-plug:v1
       volumes:
       - name: dex-cert
         secret:
